@@ -40,6 +40,11 @@ function Login_signup() {
         alert('Logged in')
         history.push('/home')
     }
+
+    const forget = () => {
+        history.push('/forgot')
+    }
+    
     const google = () => {
         if (!firebase.apps.length) {
             firebase.initializeApp(firebaseConfig);
@@ -77,25 +82,14 @@ function Login_signup() {
                 console.log(result)
                 /** @type {firebase.auth.OAuthCredential} */
                 var credential = result.credential;
-
-                // The signed-in user info.
                 var user = result.user;
-
-                // This gives you a Facebook Access Token. You can use it to access the Facebook API.
                 var accessToken = credential.accessToken;
-
-                // ...
             })
             .catch((error) => {
-                // Handle Errors here.
                 var errorCode = error.code;
                 var errorMessage = error.message;
-                // The email of the user's account used.
                 var email = error.email;
-                // The firebase.auth.AuthCredential type that was used.
                 var credential = error.credential;
-
-                // ...
             });
     }
 
@@ -207,7 +201,7 @@ function Login_signup() {
                 <form id="sign-in-form">      
                     <input type="text" placeholder="Roll Number"/>
                     <input type="password" placeholder="Password"/>
-                    <p className="forgot-password">Forgot your password?</p>
+                    <p className="forgot-password" style={{pointer:"cursor"}} onClick={forget}>Forgot your password?</p>
                     <button className="control-button in" onClick={submit}>Sign In</button>
                 </form>
                 </div>

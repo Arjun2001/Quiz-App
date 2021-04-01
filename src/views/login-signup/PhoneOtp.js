@@ -13,9 +13,9 @@ function PhoneOtp() {
             firebase.app(); // if already initialized, use that one
          }
         const uiConfig = {
-        signInSuccessUrl: "https://netflix-clone-ankur.herokuapp.com/", //This URL is used to return to that page when we got success response for phone authentication.
+        signInSuccessUrl: "http://localhost:3000/home/", //This URL is used to return to that page when we got success response for phone authentication.
         signInOptions: [firebase.auth.PhoneAuthProvider.PROVIDER_ID],
-        tosUrl: "https://netflix-clone-ankur.herokuapp.com/"
+        tosUrl: "http://localhost:3000/home/"
         };
         if(firebaseui.auth.AuthUI.getInstance()) {
             const ui = firebaseui.auth.AuthUI.getInstance()

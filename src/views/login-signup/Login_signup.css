@@ -15,7 +15,7 @@
     letter-spacing: 0.5px;
   }
   
-  .container{
+  .container1{
     width: var(--form-width);
     height: var(--form-height);
     position: relative;
@@ -255,6 +255,26 @@
   .forgot-password:hover{
     cursor: pointer;
   }
+
+  .form-signin-heading,
+	.checkbox {
+	  margin-bottom: 30px;
+    /* width: 75px; */
+	}
+
+	.checkbox {
+	  font-weight: normal;
+    left: -60px;
+    position: relative;
+    font-weight: 300;
+    font-size: 15px;
+	}
+
+  #rememberMe{
+    width: 13px  !important;
+    margin: 5px !important;
+    padding: 10px;
+}
   
   /* 
   ---------------------------

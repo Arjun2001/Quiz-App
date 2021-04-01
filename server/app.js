@@ -1,6 +1,8 @@
 const express = require('express');
 const cors = require('cors');
+const mySql = require('mysql');
 // const morgan = require('morgan');
+const user = require('./routes/user');
 require('dotenv').config();
 
 const nodemailer = require('nodemailer');
@@ -15,10 +17,20 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 // app.use(morgan("default"));
 
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
+
+ 
+             
 
 app.get('/', (req,res) => {
   res.json("hellooo")
-})
+});
+
+app.use('/user', user);
 
 app.post('/forgotpassword', (req,res) => {
   if (req.body.email === 'arjundevpk2001@gmail.com') {
@@ -35,7 +47,7 @@ app.post('/forgotpassword', (req,res) => {
     // random token has to be generated
 
     const mailOptions = {
-      from: 'arjunsmart2001@gmail.com',
+      from: 'Quiz App',
       to: `${req.body.email}`,
       subject: 'Link To Reset Password',
       text: 'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n'
@@ -55,6 +67,8 @@ app.post('/forgotpassword', (req,res) => {
     res.status(202).json('Email not found in the DB.');
   } 
 })
+
+
 
 const PORT = 5000 || process.env.PORT
 app.listen(PORT , () => {

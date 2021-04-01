@@ -1,0 +1,36 @@
+.blogs-container{
+    padding: 10px;
+    text-align: left;
+    text-align: center;
+    background: white;
+    border-radius: 10px;
+}
+
+.blog-title{
+    font-size: 25px;
+    font-weight: normal;
+    color: #000000;
+}
+
+.separator {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    font-family: Poppins;
+    font-size: 15px;
+  }
+  
+  .separator::before,
+  .separator::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid #eaeaea;
+  }
+  
+  .separator:not(:empty)::before {
+    margin-right: .25em;
+  }
+  
+  .separator:not(:empty)::after {
+    margin-left: .25em;
+  }

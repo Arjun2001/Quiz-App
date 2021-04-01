@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import {useHistory} from "react-router-dom";
+import axios from 'axios';
+import Swal from 'sweetalert2';
 import './Login_signup.css'
 import firebaseConfig  from '../../firebaseConfig';
 import firebase from "firebase/app";
@@ -35,10 +37,63 @@ function Login_signup() {
     };
 
     const history = useHistory();
-    const submit = (e) => {
+
+    const signup = (e) => {
         e.preventDefault();
-        alert('Logged in')
-        history.push('/home')
+        var elements = e.target.elements
+        var obj ={};
+        for(var i = 0 ; i < elements.length ; i++){
+            var item = elements.item(i);
+            obj[item.name] = item.value;
+        }
+        axios
+        .post('http://localhost:5000/user/signup',{data:obj})
+        .then(res => {
+        if (res.status === 200) {
+          Swal.fire({
+            icon: 'success',
+            text: res.data
+          }).then((response) => {
+            history.push('/home')
+          })
+        } else {
+          Swal.fire({
+            icon: 'error',
+            text: res.data
+          })
+        }
+      })
+    }
+
+    const signin = (e) => {
+        e.preventDefault();
+        var elements = e.target.elements
+        var obj ={};
+        for(var i = 0 ; i < elements.length ; i++){
+            var item = elements.item(i);
+            if (item.name === 'rememberMe') {
+                obj[item.name] = item.checked;
+            } else {
+                obj[item.name] = item.value;
+            }
+        }
+        axios
+        .post('http://localhost:5000/user/signin',{data:obj})
+        .then(res => {
+        if (res.status === 200) {
+          Swal.fire({
+            icon: 'success',
+            text: res.data
+          }).then((response) => {
+            history.push('/home')
+          })
+        } else {
+          Swal.fire({
+            icon: 'error',
+            text: res.data
+          })
+        }
+      })
     }
 
     const forget = () => {
@@ -57,14 +112,32 @@ function Login_signup() {
             .then((result) => {
                 console.log(result)
                 /** @type {firebase.auth.OAuthCredential} */
-                var credential = result.credential;
-                var token = credential.accessToken;
-                var user = result.user;
+                axios
+                .post('http://localhost:5000/user/signin',{data:{email :result.user.email}})
+                .then(res => {
+                if (res.status === 200) {
+                    Swal.fire({
+                        icon: 'success',
+                        text: res.data
+                }).then((response) => {
+                    history.push('/home')
+                })
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        text: res.data
+                    })
+                }
+            })
+                // var credential = result.credential;
+                // var token = credential.accessToken;
+                // var user = result.user;
             }).catch((error) => {
-                var errorCode = error.code;
-                var errorMessage = error.message;
-                var email = error.email;
-                var credential = error.credential;
+                console.log(error)
+                // var errorCode = error.code;
+                // var errorMessage = error.message;
+                // var email = error.email;
+                // var credential = error.credential;
             });
         }
 
@@ -81,15 +154,16 @@ function Login_signup() {
             .then((result) => {
                 console.log(result)
                 /** @type {firebase.auth.OAuthCredential} */
-                var credential = result.credential;
-                var user = result.user;
-                var accessToken = credential.accessToken;
+                // var credential = result.credential;
+                // var user = result.user;
+                // var accessToken = credential.accessToken;
             })
             .catch((error) => {
-                var errorCode = error.code;
-                var errorMessage = error.message;
-                var email = error.email;
-                var credential = error.credential;
+                console.log(error)
+                // var errorCode = error.code;
+                // var errorMessage = error.message;
+                // var email = error.email;
+                // var credential = error.credential;
             });
     }
 
@@ -164,7 +238,7 @@ function Login_signup() {
 
     return (
         <div>
-            <div className="container">
+            <div className="container1">
             <div className="overlay" id="overlay">
                 <div className="sign-in" id="sign-in">
                 <h1>Welcome Back!</h1>
@@ -198,21 +272,25 @@ function Login_signup() {
                     </button>
                 </div>
                 <p className="small">or use your email account:</p>
-                <form id="sign-in-form">      
-                    <input type="text" placeholder="Roll Number"/>
-                    <input type="password" placeholder="Password"/>
+                <form id="sign-in-form" onSubmit={signin}>      
+                    <input type="text" placeholder="Roll Number" name="roll_no"/>
+                    <input type="password" placeholder="Password" name="password"/>
+                    <div className="checkbox">
+                        <input type="checkbox" id="rememberMe" name="rememberMe" /> Remember me
+                    </div>
                     <p className="forgot-password" style={{pointer:"cursor"}} onClick={forget}>Forgot your password?</p>
-                    <button className="control-button in" onClick={submit}>Sign In</button>
+                    <button className="control-button in" type="submit">Sign In</button>
                 </form>
                 </div>
                 <div className="sign-up" id="sign-up-info">
                 <h1>Create Account</h1>
-                <form id="sign-up-form">
-                    <input type="text" placeholder="Roll Number"/>
-                    <input type="number" placeholder="Phone Number"/>
-                    <input type="email" placeholder="Email"/>
-                    <input type="password" placeholder="Password"/>
-                    <button className="control-button up" onClick={submit}>Sign Up</button>
+                <form id="sign-up-form" onSubmit={signup}>
+                    <input type="text" placeholder="Roll Number" name ="roll_no"/>
+                    <input type="date" name="dob"/>
+                    <input type="number" placeholder="Phone Number" name="phone_no"/>
+                    <input type="email" placeholder="Email" name="email"/>
+                    <input type="password" placeholder="Password" name="password"/>
+                    <button className="control-button up" type="submit">Sign Up</button>
                 </form>
                 </div>
             </div>

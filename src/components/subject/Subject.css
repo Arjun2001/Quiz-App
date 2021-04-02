@@ -1,0 +1,22 @@
+.sub-main {
+    padding: 10px;
+    text-align: center;
+    background: white;
+    border-radius: 10px;
+    width: 100%;
+}
+
+.cards {
+    display: flex;
+    flex-direction: row;
+    flex-wrap:wrap;
+}
+
+.MuiPaper-root {
+    border-radius: 15px !important;
+    margin: 0px 15px 15px 0px;
+}
+
+.makeStyles-paper-13{
+    width: 550px;
+}

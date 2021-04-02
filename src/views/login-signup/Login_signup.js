@@ -46,6 +46,26 @@ function Login_signup() {
             var item = elements.item(i);
             obj[item.name] = item.value;
         }
+        // // validation
+        // if (obj.roll_no) {
+        //     if (obj.roll_no.length !== 6) Swal("Roll Number Is Of 6 Digit");
+        // } else { Swal("Roll Number Is Not Provided")}
+        // if (obj.dob) {
+        //     let now = Date();
+        //     now.setHours(0,0,0,0);
+        //     if (obj.dob > now) Swal("Invalid Date Of Birth")
+        // }else { Swal("Date Of Birth Is Not Provided")}
+        // if (obj.phone_no) {
+        //     let phoneno = /^\d{10}$/;
+        //     if(!(obj.phone_no.match(phoneno))) Swal("Invalid Phone Number");
+        // }else {Swal("Phone Number Is Not Provided")}
+        // if (obj.email) {
+        //     if (!(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(obj.email))) Swal("Invalid Phone Number");
+        // }else {Swal("Email Is Not Provided")}
+        // if (obj.password) {
+        //     if (obj.password.length < 4) Swal("Password Is Of Atleast 4 digits");
+        // }else {Swal("Password Is Not Provided")}
+        // // validation
         axios
         .post('http://localhost:5000/user/signup',{data:obj})
         .then(res => {
@@ -275,8 +295,8 @@ function Login_signup() {
                 </div>
                 <p className="small">or use your email account:</p>
                 <form id="sign-in-form" onSubmit={signin}>      
-                    <input type="text" placeholder="Roll Number" name="roll_no"/>
-                    <input type="password" placeholder="Password" name="password"/>
+                    <input type="text" placeholder="Roll Number" name="roll_no" required/>
+                    <input type="password" placeholder="Password" name="password" required/>
                     <div className="checkbox">
                         <input type="checkbox" id="rememberMe" name="rememberMe" /> Remember me
                     </div>
@@ -287,11 +307,11 @@ function Login_signup() {
                 <div className="sign-up" id="sign-up-info">
                 <h1>Create Account</h1>
                 <form id="sign-up-form" onSubmit={signup}>
-                    <input type="text" placeholder="Roll Number" name ="roll_no"/>
-                    <input type="date" name="dob"/>
-                    <input type="number" placeholder="Phone Number" name="phone_no"/>
-                    <input type="email" placeholder="Email" name="email"/>
-                    <input type="password" placeholder="Password" name="password"/>
+                    <input type="text" placeholder="Roll Number" name ="roll_no" required size="6"/>
+                    <input type="date" name="dob" required max="2021-04-13"/>
+                    <input type="number" placeholder="Phone Number" name="phone_no" required pattern="[0-9]{10}"/>
+                    <input type="email" placeholder="Email" name="email" required/>
+                    <input type="password" placeholder="Password" name="password" required/>
                     <button className="control-button up" type="submit">Sign Up</button>
                 </form>
                 </div>

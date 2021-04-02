@@ -34,10 +34,6 @@ app.get('/', (req,res) => {
 app.use('/user', user);
 app.use('/api', api);
 
-function generateAccessToken(username) {
-  return jwt.sign({roll_no:username}, process.env.TOKEN_SECRET, { expiresIn: '1800s' });
-}
-
 
 app.post('/forgotpassword', (req,res) => {
   if (req.body.email === 'arjundevpk2001@gmail.com') {
@@ -51,7 +47,7 @@ app.post('/forgotpassword', (req,res) => {
     });
     
     const token = "qwecwervwwcrwex"    
-    // random token has to be generated
+    // user token has to be replaced
 
     const mailOptions = {
       from: 'Quiz App',

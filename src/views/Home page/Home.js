@@ -1,6 +1,8 @@
 import React,{useEffect} from 'react'
 import Navbar from '../../components/Navbar/Navbar'
 import Blog from '../../components/blogs/Blog'
+import Subject from '../../components/subject/Subject'
+import './Home.css'
 import axios from 'axios';
 import Swal from 'sweetalert2';
 
@@ -10,7 +12,7 @@ function Home() {
         try {
             const output = await axios ({
                 method:'GET',
-                url: "http://localhost:5000/api/home",
+                url: "http://localhost:5000/api/name",
                 headers: {
                     "Authorization":`Bearer ${localStorage.getItem('Token')}`,
                     "Content-Type": "application/json"
@@ -37,16 +39,16 @@ function Home() {
     }
 
     useEffect(async() => {
-        let suma = await summa();
+        // let suma = await summa();
     })
 
 
     return (
         <div>
             <Navbar />
-            <div>
-                Hello , you are on home page!
-                <Blog></Blog>
+            <div className="home-main">
+                <div className="left-main"><Subject /></div>
+                <div className="right-main"><Blog /></div>
             </div>
             
         </div>

@@ -13,10 +13,8 @@ function generateAccessToken(username,expire) {
   }
   
 
-router.post('/signup', (req, res) => {
+router.post('/signup', (req, res) => {    
     var data;
-
-
     let roll = req.body.data.roll_no;
     let password = bcrypt.hashSync(req.body.data.password, 4);
     if (roll[0] === 'F') {

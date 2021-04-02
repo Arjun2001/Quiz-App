@@ -1,0 +1,17 @@
+.home-main {
+    display: flex;
+    flex-direction: row;
+    padding: 25px;
+    height: 100vh;
+}
+
+.left-main {
+    display: flex;
+    flex: 0.7;
+    margin-right: 10px;
+}
+
+.right-main {
+    display: flex;
+    flex: 0.3;
+}

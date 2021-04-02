@@ -4,6 +4,7 @@ import LoginSignup from './views/login-signup/Login_signup'
 import Home from './views/Home page/Home'
 import ForgetPassword from './views/Reset password/ForgetPassword'
 import ResetPassword from './views/Reset password/ResetPassword'
+import Userprofile from './views/Userprofile'
 import { BrowserRouter,Route, Switch } from "react-router-dom";
 import PrivateRoute from "./Protected";
 
@@ -15,6 +16,7 @@ function App() {
         <Route exact path='/' component={LoginSignup} />
         <PrivateRoute  path='/home' component={Home} />
         <Route  path='/forgot' component={ForgetPassword} />
+        <Route  path='/profile' component={Userprofile} />
         <Route  path='/reset/:id' component={ResetPassword} />
       </Switch>
       </BrowserRouter>

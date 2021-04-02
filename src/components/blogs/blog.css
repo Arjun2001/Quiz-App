@@ -1,9 +1,9 @@
 .blogs-container{
     padding: 10px;
-    text-align: left;
     text-align: center;
     background: white;
     border-radius: 10px;
+    width: 100%;
 }
 
 .blog-title{

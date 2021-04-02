@@ -3,10 +3,11 @@ const cors = require('cors');
 const mySql = require('mysql');
 // const morgan = require('morgan');
 const user = require('./routes/user');
+const api = require('./routes/api');
 require('dotenv').config();
 
 const nodemailer = require('nodemailer');
-
+const jwt = require('jsonwebtoken');
 const app = express();
 
 // parse json request body
@@ -31,6 +32,12 @@ app.get('/', (req,res) => {
 });
 
 app.use('/user', user);
+app.use('/api', api);
+
+function generateAccessToken(username) {
+  return jwt.sign({roll_no:username}, process.env.TOKEN_SECRET, { expiresIn: '1800s' });
+}
+
 
 app.post('/forgotpassword', (req,res) => {
   if (req.body.email === 'arjundevpk2001@gmail.com') {
@@ -38,8 +45,8 @@ app.post('/forgotpassword', (req,res) => {
     const transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: {
-        user: 'arjunsmart2001@gmail.com',
-        pass: 'gmailpassword',
+        user: process.env.GMAIL_USER,
+        pass: process.env.GMAIL_PASS,
       },
     });
     

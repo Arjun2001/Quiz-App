@@ -49,10 +49,11 @@ function Login_signup() {
         axios
         .post('http://localhost:5000/user/signup',{data:obj})
         .then(res => {
+            localStorage.setItem("Token", res.data.token)
         if (res.status === 200) {
           Swal.fire({
             icon: 'success',
-            text: res.data
+            text: res.data.message
           }).then((response) => {
             history.push('/home')
           })
@@ -80,10 +81,11 @@ function Login_signup() {
         axios
         .post('http://localhost:5000/user/signin',{data:obj})
         .then(res => {
+            localStorage.setItem('Token',res.data.token)
         if (res.status === 200) {
           Swal.fire({
             icon: 'success',
-            text: res.data
+            text: res.data.message
           }).then((response) => {
             history.push('/home')
           })

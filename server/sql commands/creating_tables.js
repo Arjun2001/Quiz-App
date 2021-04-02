@@ -3,7 +3,7 @@ const bcrypt = require('bcrypt');
 
 
     // user table creation
-connection.query("CREATE TABLE users (id int  AUTO_INCREMENT PRIMARY KEY,roll_number varchar(255) not null, dob date not null,phone_number bigint not null, email varchar(50) NOT NULL, password varchar(255) not null, role varchar(255) not null); ", (err, rows) => {
+connection.query("CREATE TABLE users (roll_number varchar(255) not null PRIMARY KEY, dob date not null,phone_number bigint not null, email varchar(50) NOT NULL, password varchar(255) not null, role varchar(255) not null); ", (err, rows) => {
     if(err) {
         console.log(err.sqlMessage,'user table error');
     } else{ 

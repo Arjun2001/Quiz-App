@@ -1,12 +1,20 @@
 import React from 'react'
 import { Container,Row,Col,Form ,Button} from 'react-bootstrap';
 import DefaultUserPic from "../img/team-male.jpeg";
-const axios = require('axios');
+import Swal from 'sweetalert2';
+import Navbar from '../components/Navbar/Navbar'
 
 
 function Userprofile(props) {
+    const submit = () => {
+        Swal.fire({
+            icon: 'success',
+            text: "User Profile Updated"
+          })
+    }
     return (
         <div>
+            <Navbar />
             <Container>
                     <Row>
                 <Col>
@@ -15,15 +23,15 @@ function Userprofile(props) {
                     <Col>
                         <h1>User Profile</h1>
                         <Form className="form">     
-                <p>{"this.state.msg"}</p>
+                <p>{"Update Details"}</p>
             <Form.Group controlId="formCategory1">
                 <Form.Label>Username</Form.Label>
-                <Form.Control type="text" defaultValue={"this.state.username"}/>
+                <Form.Control type="text" />
             
             </Form.Group>
             <Form.Group controlId="formCategory2">
                 <Form.Label>Email</Form.Label>
-                <Form.Control type="email" defaultValue={"this.state.email"} />
+                <Form.Control type="email" />
             
             </Form.Group>
             
@@ -31,7 +39,7 @@ function Userprofile(props) {
                 <Form.Label>Profile Image</Form.Label>
                 <Form.Control type="file" name="profileImage" onChange={"this.changeProfileImage"}/>
                 </Form.Group>
-            <Button variant="primary" onClick={"this.UpdateProfileHandler"}>Update Profile</Button>
+            <Button variant="primary" onClick={submit}>Update Profile</Button>
             </Form>
             </Col>
 

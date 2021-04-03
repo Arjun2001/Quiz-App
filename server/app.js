@@ -1,13 +1,11 @@
 const express = require('express');
 const cors = require('cors');
-const mySql = require('mysql');
 // const morgan = require('morgan');
 const user = require('./routes/user');
 const api = require('./routes/api');
 require('dotenv').config();
 
 const nodemailer = require('nodemailer');
-const jwt = require('jsonwebtoken');
 const app = express();
 
 // parse json request body

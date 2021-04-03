@@ -13,7 +13,6 @@ function authenticateToken(req, res, next) {
     if (token == null) return res.sendStatus(401)
   
     jwt.verify(token, process.env.TOKEN_SECRET, (err, user) => {
-      console.log(err,user)
   
       if (err) return res.status(403).json(err);
   
@@ -23,8 +22,29 @@ function authenticateToken(req, res, next) {
     })
   }
 
-router.get('/home',authenticateToken, (req,res) => {
-    res.status(200).json('welcome to the quiz app')
+router.get('/who',authenticateToken, (req,res) => {
+    res.status(200).json(req.user.roll_no)
+});
+
+router.post('/insert_course', authenticateToken, (req,res) => {
+  let data = [[req.body.data.code,req.body.data.name,req.body.data.photo,req.body.data.description,req.user.roll_no]];
+  connection.query("insert into course values ?", [data], (err, rows) => {
+    if (err) {
+        res.status(201).json(err.sqlMessage);
+    } else {
+        res.status(200).json("Added succesfully")
+    }
+  })
+});
+
+router.post('/courses', authenticateToken, (req,res) => {
+  connection.query("select * from course where fac_id = ?", [req.user.roll_no], (err, results, fields) => {
+    if (err) {
+        res.status(201).json(err.sqlMessage);
+    } else {
+        res.status(200).json(results)
+    }
+  })
 });
 
 module.exports = router;

@@ -32,3 +32,12 @@ connection.query("insert into users (roll_number,dob,phone_number,email,password
         console.log("studenet Registered Successfully")
     }
 });
+
+    // course table
+connection.query("CREATE TABLE course (code varchar(255) not null PRIMARY KEY,name varchar(255) not null,photo varchar(255) not null,description varchar(255) not null, fac_id varchar(255) not null);", (err, rows) => {
+    if(err) {
+        console.log(err.sqlMessage,'user table error');
+    } else{ 
+        console.log("table course created");
+    }
+});

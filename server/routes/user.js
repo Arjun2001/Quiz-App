@@ -4,6 +4,10 @@ connection = require('../db/db');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 
+require('dotenv').config();
+
+const nodemailer = require('nodemailer');
+
 function generateAccessToken(username,expire) {
     if(expire) {
         return jwt.sign({roll_no:username}, process.env.TOKEN_SECRET, {});
@@ -28,6 +32,22 @@ router.post('/signup', (req, res) => {
             res.status(201).json(err.sqlMessage);
         } else {
             let token = generateAccessToken(roll,false);
+            const mailOptions = {
+                from: 'Quiz App',
+                to: `${req.body.data.email}`,
+                subject: 'Account created successfully',
+                text: 'You are receiving this because you (or someone else) have created an quiz app account.\n\n'
+                + 'Thank you for registering with us.\n\n'
+                + 'Stay connected for more updates\n',
+              }
+              console.log('sending email');
+              transporter.sendMail(mailOptions, (err,response) => {
+                if (err) {
+                  console.error('there was an error: ', err);
+                } else {
+                  console.log('Successfull registration mail sent');
+                }
+              })
             res.status(200).json({message:"User Registered Successfully",token: token})
         }
     })

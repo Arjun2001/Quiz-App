@@ -17,6 +17,11 @@ function authenticateToken(req, res, next) {
       if (err) return res.status(403).json(err);
   
       req.user = user
+      if (user.roll_no.substring(0,1) === 'F') {
+        req.role = 'Faculty'
+      } else {
+        req.role = 'Student'
+      }
   
       next()
     })

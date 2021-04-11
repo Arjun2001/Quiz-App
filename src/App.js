@@ -7,6 +7,7 @@ import ResetPassword from './views/Reset password/ResetPassword'
 import Userprofile from './views/Userprofile'
 import { BrowserRouter,Route, Switch } from "react-router-dom";
 import PrivateRoute from "./Protected";
+import Contests from './components/Contests/Contest'
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
         <PrivateRoute  path='/home' component={Home} />
         <Route  path='/forgot' component={ForgetPassword} />
         <Route  path='/profile' component={Userprofile} />
+        <Route  path='/contest' component={Contests} />
         <Route  path='/reset/:id' component={ResetPassword} />
       </Switch>
       </BrowserRouter>

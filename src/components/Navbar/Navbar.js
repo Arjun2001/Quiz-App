@@ -12,6 +12,11 @@ function Navigationbar({active= 'home'}) {
     return text;
   }
 
+  const logout = () => {
+    localStorage.clear();
+    history.push('/');
+  }
+
 
   return (
         <>
@@ -27,7 +32,7 @@ function Navigationbar({active= 'home'}) {
             </Navbar.Text>
             <NavDropdown alignRight title={name} id="basic-nav-dropdown">
               <NavDropdown.Item href="/profile">Profile</NavDropdown.Item>
-              <NavDropdown.Item href="/">Logout</NavDropdown.Item>
+              <NavDropdown.Item onClick={logout}>Logout</NavDropdown.Item>
             </NavDropdown>
           </Nav>
         </Navbar.Collapse>

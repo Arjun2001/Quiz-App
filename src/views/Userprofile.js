@@ -15,6 +15,7 @@ function Userprofile(props) {
     return (
         <div>
             <Navbar />
+            <div style={{marginTop:'30px'}}></div>
             <Container>
                     <Row>
                 <Col>

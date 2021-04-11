@@ -18,7 +18,7 @@ function authenticateToken(req, res, next) {
   
       req.user = user
       if (user.roll_no.substring(0,1) === 'F') {
-        req.role = 'Faculty'
+        req.role = 'Admin'
       } else {
         req.role = 'Student'
       }
@@ -28,7 +28,7 @@ function authenticateToken(req, res, next) {
   }
 
 router.get('/who',authenticateToken, (req,res) => {
-    res.status(200).json(req.user.roll_no)
+    res.status(200).json({roll_no:req.user.roll_no,role:req.role})
 });
 
 router.post('/insert_course', authenticateToken, (req,res) => {
@@ -43,13 +43,24 @@ router.post('/insert_course', authenticateToken, (req,res) => {
 });
 
 router.post('/courses', authenticateToken, (req,res) => {
-  connection.query("select * from course where fac_id = ?", [req.user.roll_no], (err, results, fields) => {
-    if (err) {
-        res.status(201).json(err.sqlMessage);
-    } else {
-        res.status(200).json(results)
-    }
-  })
+  if (req.role === 'Admin') {
+    connection.query("select * from course where fac_id = ?", [req.user.roll_no], (err, results, fields) => {
+      if (err) {
+          res.status(201).json(err.sqlMessage);
+      } else {
+          res.status(200).json(results)
+      }
+    })
+  } else {
+    connection.query("select * from course", (err, results, fields) => {
+      if (err) {
+          res.status(201).json(err.sqlMessage);
+      } else {
+          res.status(200).json(results)
+      }
+    })
+  }
+  
 });
 
 module.exports = router;

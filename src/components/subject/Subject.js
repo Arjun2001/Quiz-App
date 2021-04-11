@@ -11,11 +11,12 @@ import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 
-function Subject() {
+function Subject(props) {
     const [open, setOpen] = useState(false);
     const [cardData, setCardData] = useState([]);
 
     const summa = async() => {
+        if (props.role === "Student") {}
         try {
             const output = await axios ({
                 method:'POST',
@@ -111,7 +112,7 @@ function Subject() {
                     photo = {item.photo}
                     />
                 })}
-                <AddCard open={handleOpen}/> 
+                {localStorage.getItem('Role')==='Admin'?<AddCard open={handleOpen}/> : <div></div>}
             </div>
         )
     }

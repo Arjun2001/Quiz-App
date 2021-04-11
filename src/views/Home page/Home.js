@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react'
+import React, { useEffect } from 'react'
 import Navbar from '../../components/Navbar/Navbar'
 import Blog from '../../components/blogs/Blog'
 import Subject from '../../components/subject/Subject'
@@ -7,9 +7,10 @@ import './Home.css'
 import axios from 'axios';
 
 function Home() {
+
     useEffect(() => {
         try {
-            const output = axios ({
+            axios ({
                 method:'get',
                 url: "http://localhost:5000/api/who",
                 headers: {
@@ -17,13 +18,13 @@ function Home() {
                     "Content-Type": "application/json"
                   }
             }).then(res => {
-                console.log(res)
-                localStorage.setItem("Roll_no",res.data)
+                localStorage.setItem("Roll_no",res.data.roll_no)
+                localStorage.setItem("Role",res.data.role)
             })
         }catch (err) {
             console.log(err);
         }
-    })
+    },[1])
     return (
         <div>
             <Navbar />

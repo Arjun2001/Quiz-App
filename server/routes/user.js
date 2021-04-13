@@ -41,6 +41,13 @@ router.post('/signup', (req, res) => {
                 + 'Stay connected for more updates\n',
               }
               console.log('sending email');
+              const transporter = nodemailer.createTransport({
+                service: 'gmail',
+                auth: {
+                  user: process.env.GMAIL_USER,
+                  pass: process.env.GMAIL_PASS,
+                },
+              });
               transporter.sendMail(mailOptions, (err,response) => {
                 if (err) {
                   console.error('there was an error: ', err);

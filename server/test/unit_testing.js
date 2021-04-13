@@ -50,7 +50,7 @@ describe('Student workflow', () => {
     it('who am i', (done) => {
         chai.request(url).get('/api/who').set('Authorization','Bearer '+token).end((err, res) => {
             res.should.have.status(200);
-            res.body.should.be.equal(data.loginS.roll_no)
+            res.body.roll_no.should.be.equal(data.loginS.roll_no)
             done();
         })
     });
@@ -68,7 +68,7 @@ describe('Faculty workflow', () => {
     it('who am i', (done) => {
         chai.request(url).get('/api/who').set('Authorization','Bearer '+token).end((err, res) => {
             res.should.have.status(200);
-            res.body.should.be.equal(data.loginF.roll_no)
+            res.body.roll_no.should.be.equal(data.loginF.roll_no)
             done();
         })
     });

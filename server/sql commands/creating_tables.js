@@ -10,7 +10,6 @@ connection.query("CREATE TABLE users (roll_number varchar(255) not null PRIMARY 
         console.log("table users created");
     }
 });
-
     // admin insertion
 var password = bcrypt.hashSync("admin", 4);
 var data = [["F18121", '2018-08-01', '9999119119','admin@gmail.com', password, "Admin"]]
@@ -21,7 +20,6 @@ connection.query("insert into users (roll_number,dob,phone_number,email,password
         console.log("user Registered Successfully")
     }
 });
-
     // student insertion
 var password = bcrypt.hashSync("student", 4);
 var data = [["18121", '2018-08-01', '9999119119','student@gmail.com', password, "Student"]]
@@ -32,12 +30,19 @@ connection.query("insert into users (roll_number,dob,phone_number,email,password
         console.log("studenet Registered Successfully")
     }
 });
-
     // course table
 connection.query("CREATE TABLE course (code varchar(255) not null PRIMARY KEY,name varchar(255) not null,photo varchar(255) not null,description varchar(255) not null, fac_id varchar(255) not null);", (err, rows) => {
     if(err) {
         console.log(err.sqlMessage,'user table error');
     } else{ 
         console.log("table course created");
+    }
+});
+    //  contest table
+connection.query('CREATE TABLE CONTEST(ID INT not null AUTO_INCREMENT PRIMARY KEY,CODE VARCHAR(255) not null,NAME VARCHAR(255) not null,START DATETIME not null,END DATETIME not null,passcode varchar(255) not null,active bool);',(err, rows) => {
+    if(err) {
+        console.log(err.sqlMessage,'contest table error');
+    } else{ 
+        console.log("table contest created");
     }
 });

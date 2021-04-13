@@ -4,7 +4,7 @@ import './Navbar.css'
 import {useHistory} from "react-router-dom"
 import 'bootstrap/dist/css/bootstrap.css';
 
-function Navigationbar({active= 'home'}) {
+function Navigationbar() {
   const history = useHistory();
 
   const name = () => {

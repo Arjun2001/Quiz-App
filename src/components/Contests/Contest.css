@@ -1,5 +1,6 @@
 #title {
     text-align: center;
+    margin-top: 15px;
   }
   
   #employee {
@@ -39,6 +40,7 @@
     cursor: pointer;
     border: 1px solid #f44336;
     background-color: transparent;
+    margin-right: 5px;
   }
   
   .button:active {

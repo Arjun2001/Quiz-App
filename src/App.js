@@ -18,7 +18,7 @@ function App() {
         <PrivateRoute  path='/home' component={Home} />
         <Route  path='/forgot' component={ForgetPassword} />
         <Route  path='/profile' component={Userprofile} />
-        <Route  path='/contest' component={Contests} />
+        <Route  path='/contest/:id' component={Contests} />
         <Route  path='/reset/:id' component={ResetPassword} />
       </Switch>
       </BrowserRouter>

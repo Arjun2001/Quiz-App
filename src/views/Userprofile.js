@@ -3,14 +3,18 @@ import { Container,Row,Col,Form ,Button} from 'react-bootstrap';
 import DefaultUserPic from "../img/team-male.jpeg";
 import Swal from 'sweetalert2';
 import Navbar from '../components/Navbar/Navbar'
+import {useHistory} from "react-router-dom"
 
 
-function Userprofile(props) {
+function Userprofile() {
+    const history = useHistory();
     const submit = () => {
         Swal.fire({
             icon: 'success',
             text: "User Profile Updated"
-          })
+          }).then(() => {
+            history.push('/home');
+          });
     }
     return (
         <div>

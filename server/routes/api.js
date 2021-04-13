@@ -13,7 +13,7 @@ function authenticateToken(req, res, next) {
     if (token == null) return res.sendStatus(401)
   
     jwt.verify(token, process.env.TOKEN_SECRET, (err, user) => {
-  
+      // console.log(err)
       if (err) return res.status(403).json(err);
   
       req.user = user
@@ -60,7 +60,27 @@ router.post('/courses', authenticateToken, (req,res) => {
       }
     })
   }
-  
+});
+
+router.post('/create_contest',authenticateToken,(req, res) => {
+  let data = [[req.body.code,req.body.name,req.body.start,req.body.end,req.body.passcode,true]]
+  connection.query("insert into contest (code,name,start,end,passcode,ACTIVE) VALUES ?;",[data], (err, results, fields) => {
+    if (err) {
+        res.status(201).json(err.sqlMessage);
+    } else {
+        res.status(200).json(results)
+    }
+  })
+});
+
+router.post('/contests', (req,res ) => {
+    connection.query("select * from contest where code = ?;",[req.body.code], (err, results, fields) => {
+      if (err) {
+          res.status(201).json(err.sqlMessage);
+      } else {
+          res.status(200).json(results)
+      }
+    })
 });
 
 module.exports = router;

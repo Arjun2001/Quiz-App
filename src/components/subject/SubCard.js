@@ -10,6 +10,8 @@ import Typography from '@material-ui/core/Typography';
 import { red } from '@material-ui/core/colors';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 
+import {useHistory} from "react-router-dom"
+
 const useStyles = makeStyles((theme) => ({
   root: {
     width: 275,
@@ -35,9 +37,15 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function SubCard(props) {
+  const history = useHistory();
   const classes = useStyles();
 
+  const contest = () => {
+    history.push(`/contest/${props.code}`)
+  }
+
   return (
+    <div onClick={contest}>
     <Card className={classes.root}>
       <CardHeader
         avatar={
@@ -64,5 +72,6 @@ export default function SubCard(props) {
         </Typography>
       </CardContent>
     </Card>
+    </div>
   );
 }

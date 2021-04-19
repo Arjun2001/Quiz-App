@@ -1,0 +1,26 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Blog component matches the snapshot 1`] = `
+<div
+  className="sub-main"
+>
+  <h3>
+    SUBJECTS
+  </h3>
+  <hr />
+  <div
+    className="cards"
+  >
+    <div
+      style={
+        Object {
+          "display": "flex",
+          "flexWrap": "wrap",
+        }
+      }
+    >
+      <div />
+    </div>
+  </div>
+</div>
+`;

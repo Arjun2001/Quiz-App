@@ -7,7 +7,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 function Navigationbar() {
   const history = useHistory();
 
-  const name = () => {
+   const  name= () => {
     let text = 'Signed in as:' + <strong style={{color:"white"}}>{localStorage.getItem('Roll_no')}</strong>;
     return text;
   }

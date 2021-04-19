@@ -20,8 +20,8 @@ function Navigationbar() {
 
   return (
         <>
-        <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
-        <Navbar.Brand href="/home"><img src={require('../../img/quiz_icon.jpeg').default} style={{width:"50px"}}></img></Navbar.Brand>
+        <Navbar collapseOnSelect className="navbar-bg" variant="dark">
+        <Navbar.Brand href="/home"><img src="https://cdn.pixabay.com/photo/2018/08/31/11/17/quiz-3644414_960_720.png" style={{width:"60px"}}></img></Navbar.Brand>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="mr-auto">

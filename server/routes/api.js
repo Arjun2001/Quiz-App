@@ -74,6 +74,7 @@ router.post('/create_contest',authenticateToken,(req, res) => {
 });
 
 router.post('/contests', (req,res ) => {
+  if (req.body.code !== "None") {
     connection.query("select * from contest where code = ?;",[req.body.code], (err, results, fields) => {
       if (err) {
           res.status(201).json(err.sqlMessage);
@@ -81,6 +82,16 @@ router.post('/contests', (req,res ) => {
           res.status(200).json(results)
       }
     })
+  } else {
+    connection.query("select * from contest;", (err, results, fields) => {
+      if (err) {
+          res.status(201).json(err.sqlMessage);
+      } else {
+          res.status(200).json(results)
+      }
+    })
+  }
+    
 });
 
 module.exports = router;

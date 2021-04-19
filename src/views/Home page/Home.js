@@ -24,7 +24,7 @@ function Home() {
         }catch (err) {
             console.log(err);
         }
-    },[1])
+    },[])
     return (
         <div>
             <Navbar />

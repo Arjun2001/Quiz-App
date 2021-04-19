@@ -26,7 +26,7 @@ app.use(function(req, res, next) {
              
 
 app.get('/', (req,res) => {
-  res.json("hellooo")
+  res.json("welcome")
 });
 
 app.use('/user', user);
@@ -45,7 +45,6 @@ app.post('/forgotpassword', (req,res) => {
     });
     
     const token = "qwecwervwwcrwex"    
-    // user token has to be replaced
 
     const mailOptions = {
       from: 'Quiz App',

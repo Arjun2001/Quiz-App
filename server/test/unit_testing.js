@@ -14,7 +14,7 @@ describe('Backend hosted', () => {
     it('initial get request', (done) => {
         chai.request(url).get('/').end((err, res) => {
             res.should.have.status(200);
-            res.body.should.be.equal('hellooo')
+            res.body.should.be.equal('welcome')
             done();
         })
     })
@@ -39,11 +39,18 @@ describe('sign up authentication', ()=> {
 });
 
 describe('Student workflow', () => {
-    it('Login as student', (done) => {
+    it('Login as student with correct credentials', (done) => {
         chai.request(url).post('/user/signin').send({data:data.loginS}).end((err, res) => {
             res.should.have.status(200);
             res.body.message.should.be.equal('User Verified')
             token = res.body.token;
+            done();
+        })
+    });
+    it('Login as student with false credentials', (done) => {
+        chai.request(url).post('/user/signin').send({data:data.loginS1}).end((err, res) => {
+            res.should.have.status(201);
+            res.body.should.be.equal("Incorrect password")
             done();
         })
     });
@@ -57,11 +64,18 @@ describe('Student workflow', () => {
 });
 
 describe('Faculty workflow', () => {
-    it('Login as Faculty', (done) => {
+    it('Login as Faculty with correct credentials', (done) => {
         chai.request(url).post('/user/signin').send({data:data.loginF}).end((err, res) => {
             res.should.have.status(200);
             res.body.message.should.be.equal('User Verified')
             token = res.body.token;
+            done();
+        })
+    });
+    it('Login as Faculty with false credentials', (done) => {
+        chai.request(url).post('/user/signin').send({data:data.loginF1}).end((err, res) => {
+            res.should.have.status(201);
+            res.body.should.be.equal("Incorrect password")
             done();
         })
     });

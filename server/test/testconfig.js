@@ -3,9 +3,17 @@ module.exports = {
         roll_no: "18121",
         password: "student"
     },
+    loginS1: {
+        roll_no: "18121",
+        password: "student1"
+    },
     loginF: {
         roll_no: "F18121",
         password: "admin"
+    },
+    loginF1: {
+        roll_no: "F18121",
+        password: "admin1"
     },
     registerF: {
         roll_no: "F18121",

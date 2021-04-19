@@ -89,6 +89,7 @@ function Row(props) {
 const Blog = (props) =>{
 
     const [rows, setRows] = useState([]);
+    const [len,setLen] = useState(0);
 
 
     const getData = async () => {
@@ -113,6 +114,7 @@ const Blog = (props) =>{
                     }
                 }
             setRows(rows1)
+            setLen(rows1.length)
             })
         }catch (err) {
             console.log(err);
@@ -144,7 +146,7 @@ const Blog = (props) =>{
     return(
         <div className="blogs-container">
             <div className="blog-title">Latest Updates</div>
-            <div className="separator"><span style={{opacity:"0.34"}}>{0} items</span></div>
+            <div className="separator"><span style={{opacity:"0.34"}}>{len} item</span></div>
             <TableContainer component={Paper}>
             <Table aria-label="collapsible table">
                 <TableHead>

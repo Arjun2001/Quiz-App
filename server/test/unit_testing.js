@@ -61,6 +61,41 @@ describe('Student workflow', () => {
             done();
         })
     });
+    it('checking the role', (done) => {
+        chai.request(url).get('/api/who').set('Authorization','Bearer '+token).end((err, res) => {
+            res.should.have.status(200);
+            res.body.role.should.be.equal("Student")
+            done();
+        })
+    });
+    it('fetching all the courses for student', (done) => {
+        chai.request(url).post('/api/courses').set('Authorization','Bearer '+token).end((err, res) => {
+            res.should.have.status(200);
+            res.body.should.be.an('array');
+            done();
+        })
+    });
+    it('student trying to insert a subject', (done) => {
+        chai.request(url).post('/api/insert_course').send({data:data.createSubject}).set('Authorization','Bearer '+token).end((err, res) => {
+            res.should.have.status(201);
+            res.body.should.be.equal("UnAuthorized");
+            done();
+        })
+    });
+    it('student trying to create contest', (done) => {
+        chai.request(url).post('/api/create_contest').send(data.createContest).set('Authorization','Bearer '+token).end((err, res) => {
+            res.should.have.status(201);
+            res.body.should.be.equal("UnAuthorized");
+            done();
+        })
+    });
+    it('rendering contests', (done) => {
+        chai.request(url).post('/api/contests').send({code:"None"}).set('Authorization','Bearer '+token).end((err, res) => {
+            res.should.have.status(200);
+            res.body.should.be.an('array');
+            done();
+        })
+    });
 });
 
 describe('Faculty workflow', () => {
@@ -84,6 +119,49 @@ describe('Faculty workflow', () => {
             res.should.have.status(200);
             res.body.roll_no.should.be.equal(data.loginF.roll_no)
             done();
+        });
+    });
+    it('cheking after login credentials', (done) => {
+        chai.request(url).get('/api/who').set('Authorization','Bearer '+token).end((err, res) => {
+            res.should.have.status(200);
+            res.body.should.be.an('object');
+            done();
+        });
+    });
+    it('checking the role', (done) => {
+        chai.request(url).get('/api/who').set('Authorization','Bearer '+token).end((err, res) => {
+            res.should.have.status(200);
+            res.body.role.should.be.equal("Admin")
+            done();
         })
     });
+    it('fetching subjects handled by teacher', (done) => {
+        chai.request(url).post('/api/courses').set('Authorization','Bearer '+token).end((err, res) => {
+            res.should.have.status(200);
+            res.body.should.be.an('array');
+            done();
+        })
+    });
+    it('insert a subject', (done) => {
+        chai.request(url).post('/api/insert_course').send({data:data.createSubject}).set('Authorization','Bearer '+token).end((err, res) => {
+            res.should.have.status(201);
+            res.body.should.be.equal("Duplicate entry '15MAT310' for key 'course.PRIMARY'");
+            done();
+        })
+    });
+    it('creating contests', (done) => {
+        chai.request(url).post('/api/create_contest').send(data.createContest).set('Authorization','Bearer '+token).end((err, res) => {
+            res.should.have.status(200);
+            res.body.affectedRows.should.be.equal(1);
+            done();
+        })
+    });
+    it('rendering contests', (done) => {
+        chai.request(url).post('/api/contests').send({code:"13cse121"}).set('Authorization','Bearer '+token).end((err, res) => {
+            res.should.have.status(200);
+            res.body.should.be.an('array');
+            done();
+        })
+    });
+    
 });

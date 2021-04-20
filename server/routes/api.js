@@ -22,7 +22,6 @@ function authenticateToken(req, res, next) {
       } else {
         req.role = 'Student'
       }
-  
       next()
     })
   }
@@ -32,14 +31,18 @@ router.get('/who',authenticateToken, (req,res) => {
 });
 
 router.post('/insert_course', authenticateToken, (req,res) => {
-  let data = [[req.body.data.code,req.body.data.name,req.body.data.photo,req.body.data.description,req.user.roll_no]];
-  connection.query("insert into course values ?", [data], (err, rows) => {
-    if (err) {
-        res.status(201).json(err.sqlMessage);
-    } else {
-        res.status(200).json("Added succesfully")
-    }
-  })
+  if (req.role === "Admin") {
+    let data = [[req.body.data.code,req.body.data.name,req.body.data.photo,req.body.data.description,req.user.roll_no]];
+    connection.query("insert into course values ?", [data], (err, rows) => {
+      if (err) {
+          res.status(201).json(err.sqlMessage);
+      } else {
+          res.status(200).json("Added succesfully")
+      }
+    })
+  } else {
+    res.status(201).json("UnAuthorized")
+  }
 });
 
 router.post('/courses', authenticateToken, (req,res) => {
@@ -63,17 +66,22 @@ router.post('/courses', authenticateToken, (req,res) => {
 });
 
 router.post('/create_contest',authenticateToken,(req, res) => {
-  let data = [[req.body.code,req.body.name,req.body.start,req.body.end,req.body.passcode,true]]
-  connection.query("insert into contest (code,name,start,end,passcode,ACTIVE) VALUES ?;",[data], (err, results, fields) => {
-    if (err) {
-        res.status(201).json(err.sqlMessage);
+  if (req.role === "Admin") {
+      let data = [[req.body.code,req.body.name,req.body.start,req.body.end,req.body.passcode,true]]
+      connection.query("insert into contest (code,name,start,end,passcode,ACTIVE) VALUES ?;",[data], (err, results, fields) => {
+        if (err) {
+            res.status(201).json(err.sqlMessage);
+        } else {
+            res.status(200).json(results)
+        }
+      })
     } else {
-        res.status(200).json(results)
+      res.status(201).json("UnAuthorized")
     }
-  })
-});
+  });
+  
 
-router.post('/contests', (req,res ) => {
+router.post('/contests',authenticateToken, (req,res ) => {
   if (req.body.code !== "None") {
     connection.query("select * from contest where code = ?;",[req.body.code], (err, results, fields) => {
       if (err) {

@@ -101,5 +101,35 @@ router.post('/contests',authenticateToken, (req,res ) => {
   }
     
 });
-
+router.post('/addques',(req,res ) => {
+  console.log(req.body)
+  var{choice}=req.body
+  if(choice=="MCQ"){
+    var{question,options,anstype,ans,mark}=req.body
+  connection.query(
+    `INSERT into question(choice,question,a_options, ans_type,ans,mark) values( "${choice}","${question}","${options}","${anstype}","${ans}","${mark}")`,
+    function (err, results1, field) {
+      res.send("Added MCQ question");
+    }
+  );
+  }
+  if(choice=="Descriptive"){
+    var{question,ans,mark}=req.body
+    connection.query(
+      `INSERT into question(choice,question,ans,mark) values( "${choice}","${question}","${ans}","${mark}")`,
+      function (err, results1, field) {
+        res.send("Added Descriptive Question");
+      }
+    );
+  }
+  if(choice=="TandF"){
+    var{question,mark,torf}=req.body
+    connection.query(
+      `INSERT into question(choice,question,mark,torf) values( "${choice}","${question}","${mark}","${torf}")`,
+      function (err, results1, field) {
+        res.send("Added True or False Question");
+      }
+    );
+  }
+})
 module.exports = router;

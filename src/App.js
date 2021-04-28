@@ -8,6 +8,7 @@ import Userprofile from './views/Userprofile'
 import { BrowserRouter,Route, Switch } from "react-router-dom";
 import PrivateRoute from "./Protected";
 import Contests from './components/Contests/Contest'
+import QuizQuestions from './views/QuizQuestions/QuizQuestions';
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
         <Route  path='/profile' component={Userprofile} />
         <Route  path='/contest/:id' component={Contests} />
         <Route  path='/reset/:id' component={ResetPassword} />
+        <Route  path='/quiz' component={QuizQuestions} />
       </Switch>
       </BrowserRouter>
     </div>

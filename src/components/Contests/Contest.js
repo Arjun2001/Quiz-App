@@ -3,12 +3,14 @@ import axios from 'axios'
 import Swal from 'sweetalert2'
 import Button from 'react-bootstrap/Button'
 import './Contest.css'
+import {useHistory} from "react-router-dom";
 
 import Navbar from '../Navbar/Navbar'
 
 
 const Table = () => {
     const [contest, setContest] = useState([]);
+    const history = useHistory();
 
     useEffect(() => {
         getData()
@@ -40,6 +42,10 @@ const Table = () => {
         return time;
     }
 
+    const EditQuiz = (id) => {
+        history.push(`/quiz/${id}`)
+    }
+
 
     const renderHeader = () => {
         let headerElement = ['ID', 'Course Code', 'Name', 'Start Time', 'End Time','action']
@@ -66,7 +72,7 @@ const Table = () => {
                         <td>{convertTime(START)}</td>
                         <td>{convertTime(END)}</td>
                         <td className='opration'>
-                        {localStorage.getItem('Role') === "Admin" ? <button className='button'>Delete</button>:<div></div>}
+                        {localStorage.getItem('Role') === "Admin" ? <button className='button' onClick={() => {EditQuiz(ID)}}>Edit</button>:<div></div>}
                             <button className='button'>Details</button>
                         </td>
                     </tr>
@@ -88,7 +94,7 @@ const Table = () => {
                         <td>{convertTime(START)}</td>
                         <td>{convertTime(END)}</td>
                         <td className='opration'>
-                        {localStorage.getItem('Role') === "Admin" ? <button className='button'>Delete</button>:<div></div>}
+                        {localStorage.getItem('Role') === "Admin" ? <button className='button' onClick={() => {EditQuiz(ID)}}>Edit</button>:<div></div>}
                             <button className='button'>Details</button>
                         </td>
                     </tr>
@@ -110,7 +116,7 @@ const Table = () => {
                         <td>{convertTime(START)}</td>
                         <td>{convertTime(END)}</td>
                         <td className='opration'>
-                            {localStorage.getItem('Role') === "Admin" ? <button className='button'>Delete</button>:<div></div>}
+                            {localStorage.getItem('Role') === "Admin" ? <button className='button' onClick={() => {EditQuiz(ID)}}>Edit</button>:<div></div>}
                             <button className='button'>Details</button>
                         </td>
                     </tr>
@@ -171,9 +177,9 @@ const Table = () => {
         <>
         <Navbar />
         <div style={{display:"flex", flexDirection:'column', margin:"50px 75px"}}>
-            <Button variant="primary" size="lg" block onClick={create}>
+            {localStorage.getItem('Role') === "Admin" ?<Button variant="primary" size="lg" block onClick={create}>
                 CREATE CONTEST
-            </Button>
+            </Button> : <div></div>}
             <h4 id='title'>Present Contests</h4>
             <table id='employee'>
                 <thead>

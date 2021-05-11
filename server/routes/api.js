@@ -13,7 +13,6 @@ function authenticateToken(req, res, next) {
     if (token == null) return res.sendStatus(401)
   
     jwt.verify(token, process.env.TOKEN_SECRET, (err, user) => {
-      // console.log(err)
       if (err) return res.status(403).json(err);
   
       req.user = user
@@ -27,7 +26,14 @@ function authenticateToken(req, res, next) {
   }
 
 router.get('/who',authenticateToken, (req,res) => {
-    res.status(200).json({roll_no:req.user.roll_no,role:req.role})
+  connection.query("select username from profile where roll_no = ?", [req.user.roll_no], (err, result) => {
+    if (err) {
+        res.status(201).json(err.sqlMessage);
+    } else {
+      console.log(result[0].username)
+      res.status(200).json({roll_no:req.user.roll_no,role:req.role,username:result[0].username})
+    }
+  })
 });
 
 router.post('/insert_course', authenticateToken, (req,res) => {
@@ -101,35 +107,30 @@ router.post('/contests',authenticateToken, (req,res ) => {
   }
     
 });
-router.post('/addques',(req,res ) => {
-  console.log(req.body)
-  var{choice}=req.body
-  if(choice=="MCQ"){
-    var{question,options,anstype,ans,mark}=req.body
-  connection.query(
-    `INSERT into question(choice,question,a_options, ans_type,ans,mark) values( "${choice}","${question}","${options}","${anstype}","${ans}","${mark}")`,
-    function (err, results1, field) {
-      res.send("Added MCQ question");
-    }
-  );
-  }
-  if(choice=="Descriptive"){
-    var{question,ans,mark}=req.body
-    connection.query(
-      `INSERT into question(choice,question,ans,mark) values( "${choice}","${question}","${ans}","${mark}")`,
-      function (err, results1, field) {
-        res.send("Added Descriptive Question");
+
+router.post('/update_profile',authenticateToken,(req, res) => {
+    let data = [[req.body.roll_no,req.body.username,req.body.section]]
+    console.log(data)
+    connection.query("insert into profile VALUES ?;",[data], (err, results, fields) => {
+      if (err) {
+          res.status(201).json(err.sqlMessage);
+      } else {
+          res.status(200).json("Profile updated successfully")
       }
-    );
-  }
-  if(choice=="TandF"){
-    var{question,mark,torf}=req.body
-    connection.query(
-      `INSERT into question(choice,question,mark,torf) values( "${choice}","${question}","${mark}","${torf}")`,
-      function (err, results1, field) {
-        res.send("Added True or False Question");
+    })
+  });
+
+router.post('/add_questions',(req,res ) => {
+  let data = [[req.body.id,req.body.question]]
+    console.log(data)
+    connection.query("insert into questions VALUES ?;",[data], (err, results, fields) => {
+      if (err) {
+          res.status(201).json(err.sqlMessage);
+      } else {
+        console.log(results)
+          res.status(200).json(results);
       }
-    );
-  }
-})
+    })
+});
+
 module.exports = router;

@@ -55,7 +55,7 @@ router.post('/signup', (req, res) => {
                   console.log('Successfull registration mail sent');
                 }
               })
-            res.status(200).json({message:"User Registered Successfully",token: token})
+            res.status(200).json({message:"User Registered Successfully",token: token,roll_no:data[0][0],role:data[0][5]})
         }
     })
 });
@@ -71,7 +71,7 @@ router.post('/signin', (req, res) => {
                 let password = bcrypt.compareSync(req.body.data.password, results[0].password);
                 if (password) {
                     let token = generateAccessToken(req.body.data.roll_no,req.body.data.rememberMe);
-                    res.status(200).json({message:"User Verified", token: token})
+                    res.status(200).json({message:"User Verified", token: token,roll_no:req.body.data.roll_no})
                 } else {
                     res.status(201).json("Incorrect password")
                 }

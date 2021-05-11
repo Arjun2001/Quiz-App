@@ -103,7 +103,7 @@ function Subject(props) {
     const fetchCards = () => {
         return (
             <div style={{display:"flex",flexWrap:"wrap"}}>
-                {cardData.map((item, index) => {
+                {cardData ?cardData.map((item, index) => {
                     return <SubCard 
                     key = {index}
                     code = {item.code}
@@ -111,7 +111,7 @@ function Subject(props) {
                     desc = {item.description}
                     photo = {item.photo}
                     />
-                })}
+                }): <></>}
                 {localStorage.getItem('Role')==='Admin'?<AddCard open={handleOpen}/> : <div></div>}
             </div>
         )

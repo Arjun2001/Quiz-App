@@ -9,6 +9,7 @@ import { BrowserRouter,Route, Switch } from "react-router-dom";
 import PrivateRoute from "./Protected";
 import Contests from './components/Contests/Contest'
 import QuizQuestions from './views/QuizQuestions/QuizQuestions';
+import StartQuiz from './components/Quiz Host/QuizStart/QuizStart';
 
 function App() {
   return (
@@ -21,7 +22,9 @@ function App() {
         <Route  path='/profile' component={Userprofile} />
         <Route  path='/contest/:id' component={Contests} />
         <Route  path='/reset/:id' component={ResetPassword} />
-        <Route  path='/quiz' component={QuizQuestions} />
+        <Route  path='/quiz/:id' component={QuizQuestions} />
+        <Route  path='/start' component={StartQuiz} />
+
       </Switch>
       </BrowserRouter>
     </div>

@@ -46,3 +46,13 @@ connection.query('CREATE TABLE CONTEST(ID INT not null AUTO_INCREMENT PRIMARY KE
         console.log("table contest created");
     }
 });
+
+
+//  profile table
+connection.query('create table profile(roll_no varchar(255) not null PRIMARY KEY,username VARCHAR(255) not null,section VARCHAR(255) not null);',(err, rows) => {
+    if(err) {
+        console.log(err.sqlMessage,'profile table error');
+    } else{ 
+        console.log("table profile created");
+    }
+});

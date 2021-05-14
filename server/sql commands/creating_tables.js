@@ -56,3 +56,12 @@ connection.query('create table profile(roll_no varchar(255) not null PRIMARY KEY
         console.log("table profile created");
     }
 });
+
+//  questions table
+connection.query('create table questions(contest varchar(255) not null,question JSON not null);',(err, rows) => {
+    if(err) {
+        console.log(err.sqlMessage,'questions table error');
+    } else{ 
+        console.log("questions table created");
+    }
+});

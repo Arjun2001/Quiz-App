@@ -16,7 +16,7 @@ import RadioGroup from "@material-ui/core/RadioGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
-import SaveAltIcon from '@material-ui/icons/SaveAlt';
+import SaveIcon from '@material-ui/icons/Save';
 
 import CheckIcon from "@material-ui/icons/Check";
 import ToggleButton from "@material-ui/lab/ToggleButton";
@@ -137,7 +137,6 @@ const QuesForm = (d) => {
       }
       ques["answer"] = document.getElementsByName('answer')[i].value
       ques["mark"] = document.getElementsByName('mark')[i].value
-      console.log(ques,"se")
       let temp = JSON.stringify(ques)
       try {
         axios ({
@@ -150,17 +149,17 @@ const QuesForm = (d) => {
               data: {question:temp,id:contest_id}
         }).then(res => {
             console.log(res.data)
-            Swal.fire({
-              icon: 'success',
-              text: "Quiz Questions Added Successfully"
-              }).then(results => {
-                history.push("/home")
-              })
         })
     }catch (err) {
         console.log(err);
     }
     }
+    Swal.fire({
+      icon: 'success',
+      text: "Quiz Questions Added Successfully"
+      }).then(results => {
+        window.history.back();
+      })
   }
 
   const check = () => {
@@ -168,11 +167,12 @@ const QuesForm = (d) => {
       return <Button
       variant="contained"
       color="primary"
-      onClick={submit1}
+      size="large"
       className={classes.head2}
-      endIcon={<SaveAltIcon />}
+      startIcon={<SaveIcon />}
+      onClick={submit1}
     >
-      Save all Questions
+      Save
     </Button>
     }
     else {
@@ -424,28 +424,6 @@ const QuesForm = (d) => {
         ) : (
           <p></p>
         )}
-        {/* {!submitview && (
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={handleSubmit}
-            className={classes.button}
-            startIcon={<AddIcon />}
-          >
-            {submit}
-          </Button>
-        )}
-        {submitview && (
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={handleSubmit}
-            className={classes.button}
-            endIcon={<CheckIcon />}
-          >
-            {submit}
-          </Button>
-        )} */}
       </div>
     </div>
     {check()}

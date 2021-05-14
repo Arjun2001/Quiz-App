@@ -73,6 +73,16 @@ router.post('/courses', authenticateToken, (req,res) => {
 
 router.post('/create_contest',authenticateToken,(req, res) => {
   if (req.role === "Admin") {
+    if (req.body.id) {
+      let data = [req.body.name,req.body.start,req.body.end,req.body.passcode,true,req.body.id]
+      connection.query(`update contest set NAME = ?, START = ?, END = ?, passcode = ?, active = ? WHERE id = ?;`,data,(err, results, fields) => {
+        if (err) {
+            res.status(201).json(err.sqlMessage);
+        } else {
+            res.status(200).json("Contest Updated Successfully")
+        }
+      })
+    } else {
       let data = [[req.body.code,req.body.name,req.body.start,req.body.end,req.body.passcode,true]]
       connection.query("insert into contest (code,name,start,end,passcode,ACTIVE) VALUES ?;",[data], (err, results, fields) => {
         if (err) {
@@ -80,11 +90,23 @@ router.post('/create_contest',authenticateToken,(req, res) => {
         } else {
             res.status(200).json(results)
         }
-      })
-    } else {
+      })}
+  } else {
       res.status(201).json("UnAuthorized")
     }
-  });
+});
+
+
+router.post('/delete_contest',authenticateToken,(req, res) => {
+  connection.query("delete from contest where id = ?;",[req.body.id], (err, results, fields) => {
+    if (err) {
+      console.log(err)  
+        res.status(201).json(err.sqlMessage);
+    } else {
+        res.status(200).json("contest deleted successfully")
+    }
+  })
+});
   
 
 router.post('/contests',authenticateToken, (req,res ) => {
@@ -110,7 +132,6 @@ router.post('/contests',authenticateToken, (req,res ) => {
 
 router.post('/update_profile',authenticateToken,(req, res) => {
     let data = [[req.body.roll_no,req.body.username,req.body.section]]
-    console.log(data)
     connection.query("insert into profile VALUES ?;",[data], (err, results, fields) => {
       if (err) {
           res.status(201).json(err.sqlMessage);
@@ -120,15 +141,32 @@ router.post('/update_profile',authenticateToken,(req, res) => {
     })
   });
 
-router.post('/add_questions',(req,res ) => {
+router.post('/add_questions',authenticateToken,(req,res ) => {
   let data = [[req.body.id,req.body.question]]
-    console.log(data)
     connection.query("insert into questions VALUES ?;",[data], (err, results, fields) => {
       if (err) {
           res.status(201).json(err.sqlMessage);
       } else {
-        console.log(results)
           res.status(200).json(results);
+      }
+    })
+});
+
+router.post('/contest_details',authenticateToken,(req,res ) => {
+  let output;
+    connection.query("select * from contest where id = ?;",[req.body.id], (err, results, fields) => {
+      if (err) {
+          res.status(201).json(err.sqlMessage);
+      } else {
+          output = results;
+      }
+    })
+    
+    connection.query("SELECT count(contest) FROM questions WHERE contest = ?;",[req.body.id], (err, results, fields) => {
+      if (err) {
+          res.status(201).json(err.sqlMessage);
+      } else {
+        res.status(200).json({data:output,check:results});
       }
     })
 });

@@ -92,7 +92,7 @@ const Quiz = ({ data, countdownTime, endQuiz }) => {
                   </Message>
                   <br />
                   <Item.Description>
-                    <h3>Please choose one of the following answers:</h3>
+                  <h3>Please choose one of the following answers:</h3>
                   </Item.Description>
                   <Divider />
                   <Menu vertical fluid size="massive">

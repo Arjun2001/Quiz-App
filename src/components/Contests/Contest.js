@@ -46,6 +46,64 @@ const Table = () => {
         history.push(`/quiz/${id}`)
     }
 
+    const joinQuiz = (e) => {
+        try {
+            axios ({
+                method:'post',
+                url: "http://localhost:5000/api/contest_details",
+                headers: {
+                    "Authorization":`Bearer ${localStorage.getItem('Token')}`,
+                    "Content-Type": "application/json"
+                  },
+                  data: {
+                    id:e
+                }
+              }).then(res => {
+                let time = new Date();
+                time = time.toISOString();
+                let st_time = res.data.data[0].START
+                let end_time = res.data.data[0].END
+                if ( st_time <= time && end_time > time ) {
+                    Swal.fire({
+                        title: 'Enter the passcode',
+                        html: `<input type="password" id="pin" class="swal2-input">`,
+                        confirmButtonText: 'Join',
+                        focusConfirm: false,
+                        preConfirm: () => {
+                          const pin = Swal.getPopup().querySelector('#pin').value
+                          if (!pin) {
+                            Swal.showValidationMessage(`Please enter the passcode`)
+                          }
+                          return pin
+                        }
+                      }).then((result) => {
+                          console.log(result , res.data.data[0].passcode)
+                        if (result.value === res.data.data[0].passcode) {
+                            Swal.fire({
+                            icon: 'success',
+                            text: "Passcode is correct"
+                            }).then(results => {
+                                history.push(`/join/${e}`)
+                            })
+                        } else {
+                            Swal.fire({
+                            icon: 'error',
+                            text: "Passcode is incorrect"
+                            })
+                        }
+                    })
+                } else {
+                    Swal.fire({
+                        icon: 'info',
+                        text: "Contest has not started yet"
+                        })
+                }
+              })
+            }catch (err) {
+                console.log(err);
+            }
+    }
+
 
     const renderHeader = () => {
         let headerElement = ['ID', 'Course Code', 'Name', 'Start Time', 'End Time','action']
@@ -72,8 +130,7 @@ const Table = () => {
                         <td>{convertTime(START)}</td>
                         <td>{convertTime(END)}</td>
                         <td className='opration'>
-                        {localStorage.getItem('Role') === "Admin" ? <button className='button' onClick={() => {EditQuiz(ID)}}>Edit</button>:<div></div>}
-                            <button className='button'>Details</button>
+                        {localStorage.getItem('Role') === "Admin" ? <button className='button' onClick={() => {EditQuiz(ID)}}>Edit</button>:<button className='button' onClick={() => {joinQuiz(ID)}}>Join</button>}
                         </td>
                     </tr>
                 )

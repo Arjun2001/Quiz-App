@@ -14,6 +14,18 @@ const getLetter = number => {
     case 3:
       letter = 'D.';
       break;
+    case 4:
+      letter = 'E.';
+      break;
+    case 5:
+      letter = 'F.';
+      break;
+    case 6:
+      letter = 'G.';
+      break;
+    case 7:
+      letter = 'H.';
+      break;
     default:
       letter = null;
       break;

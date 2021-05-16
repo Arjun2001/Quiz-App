@@ -10,6 +10,7 @@ import PrivateRoute from "./Protected";
 import Contests from './components/Contests/Contest'
 import QuizQuestions from './views/QuizQuestions/QuizQuestions';
 import StartQuiz from './components/Quiz Host/QuizStart/QuizStart';
+import Student_join from './components/Student_join/StudentJoin'
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
         <Route  path='/reset/:id' component={ResetPassword} />
         <Route  path='/quiz/:id' component={QuizQuestions} />
         <Route  path='/start' component={StartQuiz} />
+        <Route  path='/join/:id' component={Student_join} />
 
       </Switch>
       </BrowserRouter>

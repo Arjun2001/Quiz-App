@@ -30,7 +30,6 @@ router.get('/who',authenticateToken, (req,res) => {
     if (err) {
         res.status(201).json(err.sqlMessage);
     } else {
-      console.log(result[0].username)
       res.status(200).json({roll_no:req.user.roll_no,role:req.role,username:result[0].username})
     }
   })
@@ -167,6 +166,33 @@ router.post('/contest_details',authenticateToken,(req,res ) => {
           res.status(201).json(err.sqlMessage);
       } else {
         res.status(200).json({data:output,check:results});
+      }
+    })
+});
+
+router.get('/get_questions/:id',(req,res ) => {
+  let id = req.params.id;
+  console.log("sdasd",id)
+  let output1;
+    connection.query("select * from contest where id = ?;",[id], (err, results, fields) => {
+      if (err) {
+          res.status(201).json(err.sqlMessage);
+      } else {
+          output1 = results;
+      }
+    })
+
+  
+    connection.query("select question from questions where contest = ?;",[id], (err, results, fields) => {
+      if (err) {
+          res.status(201).json(err.sqlMessage);
+      } else {
+          let output = {response_code:10,results:[]};
+          results.map((ques) => {
+            let temp = JSON.parse(ques.question)
+            output.results.push(temp)
+          })
+          res.status(200).json({details:output1,output:output})
       }
     })
 });

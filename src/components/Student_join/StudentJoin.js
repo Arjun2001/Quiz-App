@@ -1,6 +1,7 @@
 import React,{useState,useEffect} from 'react'
 import Navbar from '../Navbar/Navbar';
 import axios from 'axios'
+import Swal from 'sweetalert2'
 import he from 'he';
 import { TextArea } from 'semantic-ui-react'
 
@@ -23,11 +24,11 @@ import Loader from '../Quiz Host/Loader'
 import { shuffle } from '../utils';
 
 function StudentJoin() {
-  // const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [data, setData] = useState(null);
   const [countdownTime, setCountdownTime] = useState(null);
   const [isQuizCompleted, setIsQuizCompleted] = useState(false);
-  const [resultData, setResultData] = useState(null); 
+  const [np, setNp] = useState(false); 
   const [offline, setOffline] = useState(false);
   
   // const [ansType, setAnsType] = useState('')
@@ -50,53 +51,46 @@ function StudentJoin() {
 
   const tandf = ["True","False"]
 
-  const endQuiz = resultData => {
-    // setLoading(true);
 
-    setTimeout(() => {
-      // setIsQuizCompleted(true);
-      // setResultData(resultData);
-      // setLoading(false);
-    }, 2000);
-  };
+  const arrRemove = (arr,value) => {
+    return arr.filter((ele) => {
+      return ele != value;
+    })
+  }
 
   const handleItemClick = (e, { name }) => {
-    console.log("key = ",name)
     const ansType = name.split(',')
     if (ansType[0] === "MulAns") {
-      let arr = userSlectedAns
-      arr.push(ansType[1])
+      var arr = userSlectedAns
+      if (arr.includes(ansType[1])) {
+        arr = arrRemove(arr,ansType[1])
+      } else {
+        arr.push(ansType[1])
+      }
       console.log(arr)
       setUserSlectedAns(arr)
     } else {
       setUserSlectedAns([ansType[1]]);
     }
-    console.log(userSlectedAns)
   };
 
   const handleNext = (text) => {
     let point = 0;
     if (text === "Descriptive") {
+      setNp(true)
       point = 0
       const qna = questionsAndAnswers;
       qna.push({
         question: he.decode(data[questionIndex].question),
         user_answer: document.getElementById("textareavalue").value,
-        correct_answer: "NP",
+        correct_answer: data[questionIndex].answer,
         point
       });
-      if (questionIndex === data.length - 1) {
-        return endQuiz({
-          totalQuestions: data.length,
-          correctAnswers: correctAnswers + point,
-          timeTaken,
-          questionsAndAnswers: qna
-        });
-      }
       setQuestionsAndAnswers(qna);
-    } else{
-      const correct_answer = data[questionIndex].answer
-      correct_answer.split(',')
+      
+    } else {
+      var correct_answer = data[questionIndex].answer
+      correct_answer = correct_answer.split(',')
       if (arraysMatch(userSlectedAns,correct_answer)) {
         point = parseInt(data[questionIndex].mark);
       }
@@ -107,15 +101,33 @@ function StudentJoin() {
         correct_answer: correct_answer,
         point
       });
-      if (questionIndex === data.length - 1) {
-        return endQuiz({
-          totalQuestions: data.length,
-          correctAnswers: correctAnswers + point,
-          timeTaken,
-          questionsAndAnswers: qna
-        });
-      }
       setQuestionsAndAnswers(qna);
+      
+      
+    }
+    if (questionIndex === data.length - 1) {
+      try {
+            axios ({
+                method:'post',
+                url: `http://localhost:5000/api/add_result`,
+                headers: {
+                    "Authorization":`Bearer ${localStorage.getItem('Token')}`,
+                    "Content-Type": "application/json"
+                },
+                data: {
+                    roll_no:localStorage.getItem('Roll_no'),
+                    contest_id:window.location.pathname.substring(6),
+                    answer:(questionsAndAnswers),
+                    publised:np
+                }
+            })
+            .then(data => {
+              console.log(data)
+              window.history.back();
+            })
+        }catch (err) {
+            console.log(err);
+        }
     }
 
 
@@ -126,17 +138,22 @@ function StudentJoin() {
   };
 
   const timeOver = timeTaken => {
-    return endQuiz({
-      totalQuestions: data.length,
-      correctAnswers,
-      timeTaken,
-      questionsAndAnswers
-    });
+    Swal.fire({
+      icon: 'error',
+      title: 'Oops...',
+      text: "Time's up",
+    }).then((res) => {
+      window.history.back();
+    })
   };
 
-  // useEffect(() => {
-  //   fetchData();
-  // })
+  useEffect(() => {
+    setTimeout(() => {
+      fetchData();
+      setLoading(false)
+    },100)
+    
+  },[1])
 
   const difference = (a,b) => {
     let hours = 0,minutes = 0,seconds = 0;
@@ -144,11 +161,11 @@ function StudentJoin() {
         d2 = new Date(b);
     var diff = d2 - d1;
     if (diff > 3600e3) {
-      hours = Math.floor(diff / 3600e3)
+      hours = Math.floor(diff / 1e3)
       diff = diff % 3600e3
     }
     if (diff > 60e3) {
-      minutes = Math.floor(diff / 60e3)
+      minutes = Math.floor(diff / 1e3)
       diff = diff % 60e3
     }
     if (diff > 1e3) {
@@ -160,11 +177,7 @@ function StudentJoin() {
   const startQuiz = (data, countdownTime) => {
     // setLoading(true);
     setCountdownTime(countdownTime);
-
-    setTimeout(() => {
-      setData(data);
-      // setLoading(false);
-    }, 1000);
+    setData(data);
   };
 
     const fetchData = () => {
@@ -182,9 +195,7 @@ function StudentJoin() {
                 }
             })
           .then(data => {
-            console.log(difference(data.data.details[0].START,data.data.details[0].END))
             setTimeout(() => {
-              console.log(data.data.output)
               const { results } = data.data.output;
               // results.forEach(element => {
               //   element.options = shuffle([
@@ -214,15 +225,8 @@ function StudentJoin() {
 
     return (
         <div>
-          <Button
-                  primary
-                  size="big"
-                  icon="play"
-                  labelPosition="left"
-                  content={'Play Now'}
-                  onClick={fetchData}
-                />
-          {data &&<>
+          {loading && <Loader />}
+          {!loading && data &&<>
             
             <Navbar />
             <Item.Header>
@@ -247,11 +251,16 @@ function StudentJoin() {
                       <br />
                       <Item.Meta>
                         <Message size="huge" floating>
-                          <b>{`Q. ${he.decode(data[questionIndex].question)}`}</b>
+                          <b>{`Q${questionIndex+1}. ${he.decode(data[questionIndex].question)}`}</b>
                         </Message>
                         <br />
                         <Item.Description>
-                        {data[questionIndex].choice === 'Descriptive' ?<h3>Enter your answer below:</h3>:data[questionIndex].choice === 'MCQ'?<h3>Please choose one of the following answers:</h3>:<h3>Please choose multiple answers from the following:</h3>}
+                          
+                        {data[questionIndex].choice === 'Descriptive'  && <h3>Enter your answer below:</h3>}
+                        {data[questionIndex].choice === 'MCQ' && data[questionIndex].ans_type === 'MulAns' && <h3>Please choose MULTIPLE ANSWERS from the following:</h3>}
+                        {data[questionIndex].choice === 'MCQ' && data[questionIndex].ans_type === 'SingleAns' && <h3>Please choose ONE of the following answers:</h3>}
+                        {data[questionIndex].choice === 'TandF' && <h3>Please select TRUE or FALSE:</h3>}
+                        
                         </Item.Description>
                         <Divider />
                         {data[questionIndex].choice === 'MCQ' &&
@@ -260,7 +269,6 @@ function StudentJoin() {
                             const letter = getLetter(i);
                             const decodedOption = option;
                             const type = he.decode(data[questionIndex].ans_type)
-                            console.log("sdf",userSlectedAns,userSlectedAns.length,userSlectedAns === [])
                             return (
                               <Menu.Item
                                 key={decodedOption}
@@ -303,7 +311,8 @@ function StudentJoin() {
                       </Item.Meta>
                       <Divider />
                       <Item.Extra>
-                        <Button
+                        { data.length !== questionIndex+1 ?
+                          <Button
                           primary
                           content="Next"
                           onClick={()=> handleNext(data[questionIndex].choice)}
@@ -311,7 +320,13 @@ function StudentJoin() {
                           size="big"
                           icon="right chevron"
                           labelPosition="right"
-                        />
+                        /> :
+                        <Button negative 
+                        onClick={()=> handleNext(data[questionIndex].choice)}
+                        size="big"
+                        floated="right"
+                        >SUBMIT</Button>
+                        }
                       </Item.Extra>
                     </Item.Content>
                   </Item>

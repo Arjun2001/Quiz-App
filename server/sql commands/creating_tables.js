@@ -65,3 +65,13 @@ connection.query('create table questions(contest varchar(255) not null,question 
         console.log("questions table created");
     }
 });
+
+//  result table
+
+connection.query('CREATE TABLE result(roll_no INT not null,contest_id int not null,answer JSON,published bool);',(err, rows) => {
+    if(err) {
+        console.log(err.sqlMessage,'result table error');
+    } else{ 
+        console.log("result table created");
+    }
+});

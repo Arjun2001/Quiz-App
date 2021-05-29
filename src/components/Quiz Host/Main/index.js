@@ -92,6 +92,7 @@ const Main = ({ startQuiz }) => {
           });
 
           setProcessing(false);
+          console.log(countdownTime)
           startQuiz(
             results,
             countdownTime.hours + countdownTime.minutes + countdownTime.seconds

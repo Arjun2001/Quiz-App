@@ -145,7 +145,7 @@ const Table = () => {
             if (now > START) {
                 return (
                     <tr key={ID}>
-                        <td>{index}</td>
+                        <td>{ID}</td>
                         <td>{CODE}</td>
                         <td>{NAME}</td>
                         <td>{convertTime(START)}</td>
@@ -167,7 +167,7 @@ const Table = () => {
             if (now < START) {
                 return (
                     <tr key={ID}>
-                        <td>{index}</td>
+                        <td>{ID}</td>
                         <td>{CODE}</td>
                         <td>{NAME}</td>
                         <td>{convertTime(START)}</td>

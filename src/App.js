@@ -9,8 +9,15 @@ import { BrowserRouter,Route, Switch } from "react-router-dom";
 import PrivateRoute from "./Protected";
 import Contests from './components/Contests/Contest'
 import QuizQuestions from './views/QuizQuestions/QuizQuestions';
-
+import QuizDet from './views/QuizDetails/QuizDet';
+import Markfetch from './views/QuizDetails/Markfetch';
+import Navbar from './components/Navbar/Navbar';
 function App() {
+  const a="/studData"
+  const b="/studPass"
+  const d="/studFail"
+  const e="/Rollorder"
+  const f="/markfetch"
   return (
     <div>
       <BrowserRouter>
@@ -22,6 +29,22 @@ function App() {
         <Route  path='/contest/:id' component={Contests} />
         <Route  path='/reset/:id' component={ResetPassword} />
         <Route  path='/quiz' component={QuizQuestions} />
+        <Route  path='/details'>
+        <QuizDet c={a}/>
+        </Route>
+        <Route  path='/pass'>
+        <QuizDet c={b}/>
+        </Route>
+        <Route  path='/fail'>
+        <QuizDet c={d}/>
+        </Route>
+        <Route  path='/order'>
+        <QuizDet c={e}/>
+        </Route>
+        <Route  path='/testdetails/:id'>
+          <Navbar/>
+        <Markfetch c={f}/>
+        </Route>
       </Switch>
       </BrowserRouter>
     </div>

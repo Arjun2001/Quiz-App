@@ -197,9 +197,9 @@ router.get('/get_questions/:id',(req,res ) => {
     })
 });
 
-router.post('/add_result',authenticateToken,(req,res ) => {
-  let data = [[req.body.roll_no,req.body.contest_id,JSON.stringify(req.body.answer),req.body.publised]]
-    connection.query("insert into result (roll_no,contest_id,answer,published) values ?;",[data], (err, results, fields) => {
+router.post('/add_result',authenticateToken,(req,res) => {
+  let data = [[req.body.roll_no,req.body.contest_id,JSON.stringify(req.body.answer),req.body.publised,req.body.time]]
+    connection.query("insert into result (roll_no,contest_id,answer,published,time) values ?;",[data], (err, results, fields) => {
       if (err) {
         console.log(err)
           res.status(201).json(err.sqlMessage);

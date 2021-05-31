@@ -20,6 +20,7 @@ import Offline from '../Quiz Host/Offline'
 import Countdown from '../Quiz Host/Countdown';
 import { getLetter } from '../utils';
 import Loader from '../Quiz Host/Loader'
+import { timeConverter } from '../utils';
 
 import { shuffle } from '../utils';
 
@@ -103,10 +104,16 @@ function StudentJoin() {
       });
       setQuestionsAndAnswers(qna);
       
-      
     }
+    
+    setCorrectAnswers(correctAnswers + point);
+    setQuestionIndex(questionIndex + 1);
+    setUserSlectedAns([]);
+
     if (questionIndex === data.length - 1) {
       try {
+        const { hours, minutes, seconds } = timeConverter(timeTaken);
+        console.log("time taken = ",timeTaken,`${Number(hours)}h ${Number(minutes)}m ${Number(seconds)}s`)
             axios ({
                 method:'post',
                 url: `http://localhost:5000/api/add_result`,
@@ -118,23 +125,27 @@ function StudentJoin() {
                     roll_no:localStorage.getItem('Roll_no'),
                     contest_id:window.location.pathname.substring(6),
                     answer:(questionsAndAnswers),
-                    publised:np
+                    publised:np,
+                    time: `${Number(hours)}h ${Number(minutes)}m ${Number(seconds)}s`
                 }
             })
             .then(data => {
               console.log(data)
-              window.history.back();
+                Swal.fire({
+                  position: 'center',
+                  allowOutsideClick: false,
+                  icon: 'success',
+                  title: 'Your work has been saved',
+                  showConfirmButton: false
+                })
+              setTimeout(() => {
+                window.history.back();
+              },100);
             })
         }catch (err) {
             console.log(err);
         }
     }
-
-
-    setCorrectAnswers(correctAnswers + point);
-    setQuestionIndex(questionIndex + 1);
-    setUserSlectedAns([]);
-    
   };
 
   const timeOver = timeTaken => {

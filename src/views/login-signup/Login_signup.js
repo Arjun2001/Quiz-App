@@ -70,12 +70,13 @@ function Login_signup() {
         .post('http://localhost:5000/user/signup',{data:obj})
         .then(res => {
             localStorage.setItem("Token", res.data.token)
+            localStorage.setItem("Roll_no", res.data.roll_no)
         if (res.status === 200) {
           Swal.fire({
             icon: 'success',
             text: res.data.message
           }).then((response) => {
-            history.push('/home')
+            history.push('/profile')
           })
         } else {
           Swal.fire({
@@ -102,6 +103,7 @@ function Login_signup() {
         .post('http://localhost:5000/user/signin',{data:obj})
         .then(res => {
             localStorage.setItem('Token',res.data.token)
+            localStorage.setItem('Roll_no',res.data.roll_no)
         if (res.status === 200) {
           Swal.fire({
             icon: 'success',

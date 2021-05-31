@@ -12,6 +12,9 @@ import QuizQuestions from './views/QuizQuestions/QuizQuestions';
 import QuizDet from './views/QuizDetails/QuizDet';
 import Markfetch from './views/QuizDetails/Markfetch';
 import Navbar from './components/Navbar/Navbar';
+import StartQuiz from './components/Quiz Host/QuizStart/QuizStart';
+import Student_join from './components/Student_join/StudentJoin'
+
 function App() {
   const a="/studData"
   const b="/studPass"
@@ -45,6 +48,10 @@ function App() {
           <Navbar/>
         <Markfetch c={f}/>
         </Route>
+        <Route  path='/quiz/:id' component={QuizQuestions} />
+        <Route  path='/start' component={StartQuiz} />
+        <Route  path='/join/:id' component={Student_join} />
+
       </Switch>
       </BrowserRouter>
     </div>

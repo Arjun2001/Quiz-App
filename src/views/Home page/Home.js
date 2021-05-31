@@ -20,6 +20,8 @@ function Home() {
             }).then(res => {
                 localStorage.setItem("Roll_no",res.data.roll_no)
                 localStorage.setItem("Role",res.data.role)
+                localStorage.setItem("Username",res.data.username)
+                console.log(res.data)
             })
         }catch (err) {
             console.log(err);

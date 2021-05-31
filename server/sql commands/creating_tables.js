@@ -46,3 +46,32 @@ connection.query('CREATE TABLE CONTEST(ID INT not null AUTO_INCREMENT PRIMARY KE
         console.log("table contest created");
     }
 });
+
+
+//  profile table
+connection.query('create table profile(roll_no varchar(255) not null PRIMARY KEY,username VARCHAR(255) not null,section VARCHAR(255) not null);',(err, rows) => {
+    if(err) {
+        console.log(err.sqlMessage,'profile table error');
+    } else{ 
+        console.log("table profile created");
+    }
+});
+
+//  questions table
+connection.query('create table questions(contest varchar(255) not null,question JSON not null);',(err, rows) => {
+    if(err) {
+        console.log(err.sqlMessage,'questions table error');
+    } else{ 
+        console.log("questions table created");
+    }
+});
+
+//  result table
+
+connection.query('CREATE TABLE result(roll_no INT not null,contest_id int not null,answer JSON,published bool,time varchar(255));',(err, rows) => {
+    if(err) {
+        console.log(err.sqlMessage,'result table error');
+    } else{ 
+        console.log("result table created");
+    }
+});

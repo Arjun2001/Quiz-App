@@ -2,6 +2,7 @@ const express = require('express'),
 router = express.Router(),
 connection = require('../db/db');
 const jwt = require('jsonwebtoken');
+var bodyParser = require('body-parser')
 
 // const authenticateToken = require('../token/verifytoken');
 
@@ -148,8 +149,96 @@ router.post('/add_questions',authenticateToken,(req,res ) => {
       } else {
           res.status(200).json(results);
       }
-    })
+    });
+  }
+)
+router.get("/studData", (req, res) => {
+  connection.query(
+    "select roll_no,count(question_no)as quesnos,count(mark) as markobtained from attend group by roll_no",
+    (req, result) => {
+      d = result.length;
+      for (i = 0; i < result.length; i++) {
+        if (result[i].quesnos == result[i].markobtained) {
+          connection.query(
+            `select roll_no,sum(mark) as sum from attend where roll_no="${result[i].roll_no}"`,
+            (req, result1) => {
+              console.log(result1);
+              console.log(result1[0].sum);
+              console.log(result1[0].roll_no);
+              connection.query(
+                `Update mark set mark="${result1[0].sum}" where roll_no="${result1[0].roll_no}"`,
+                (req, result2) => {
+                  console.log("success");
+                }
+              );
+            }
+          );
+        } else {
+          a = "null";
+          console.log(result[i].roll_no)
+          connection.query(
+            `Update mark set mark=null where roll_no="${result[i].roll_no}"`,
+            (req, result2) => {
+              console.log("fail");
+            }
+          );
+        }
+        
+      }
+        if(d==i){
+          connection.query("select * from mark", (req, result) => {
+            res.json(result);
+          });
+        }
+          
+        
+      
+    }
+  );
 });
+router.get('/studPass', (req, res) => {
+  connection.query("select * from mark where mark>=50",(req,result)=>{
+      res.json(result)
+  })
+  
+});
+router.get('/studFail', (req, res) => {
+  connection.query("select * from mark where mark<50",(req,result)=>{
+      res.json(result)
+  })
+  
+});
+router.get('/Rollorder', (req, res) => {
+  connection.query("select * from mark w order by roll_no asc",(req,result)=>{
+      res.json(result)
+  })
+  
+});
+router.get('/markfetch', (req, res) => {
+  
+  const a=req.query.d
+  connection.query(`select * from attend where roll_no="${a}"`,(req,result)=>{
+      res.json(result)
+  })
+  
+});
+router.post('/addmark', (req, res) => {
+  var{a,b,mark}=req.body
+  console.log(a,b,mark)
+  connection.query(`UPDATE attend SET mark="${mark}" WHERE roll_no="${a}" and question_no="${b}"`,(req,result)=>{
+    connection.query(
+      `select roll_no,sum(mark) as sum from attend where roll_no="${a}"`,
+      (req, result1) => {
+        connection.query(
+          `Update mark set mark="${result1[0].sum}" where roll_no="${a}"`,
+          (req, result2) => {
+          })
+      })
+      res.json("Added")
+  })
+});
+ 
+
 
 router.post('/contest_details',authenticateToken,(req,res ) => {
   let output,output1;

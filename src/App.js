@@ -9,10 +9,18 @@ import { BrowserRouter,Route, Switch } from "react-router-dom";
 import PrivateRoute from "./Protected";
 import Contests from './components/Contests/Contest'
 import QuizQuestions from './views/QuizQuestions/QuizQuestions';
+import QuizDet from './views/QuizDetails/QuizDet';
+import Markfetch from './views/QuizDetails/Markfetch';
+import Navbar from './components/Navbar/Navbar';
 import StartQuiz from './components/Quiz Host/QuizStart/QuizStart';
 import Student_join from './components/Student_join/StudentJoin'
 
 function App() {
+  const a="/studData"
+  const b="/studPass"
+  const d="/studFail"
+  const e="/Rollorder"
+  const f="/markfetch"
   return (
     <div>
       <BrowserRouter>
@@ -23,6 +31,23 @@ function App() {
         <Route  path='/profile' component={Userprofile} />
         <Route  path='/contest/:id' component={Contests} />
         <Route  path='/reset/:id' component={ResetPassword} />
+        <Route  path='/quiz' component={QuizQuestions} />
+        <Route  path='/details'>
+        <QuizDet c={a}/>
+        </Route>
+        <Route  path='/pass'>
+        <QuizDet c={b}/>
+        </Route>
+        <Route  path='/fail'>
+        <QuizDet c={d}/>
+        </Route>
+        <Route  path='/order'>
+        <QuizDet c={e}/>
+        </Route>
+        <Route  path='/testdetails/:id'>
+          <Navbar/>
+        <Markfetch c={f}/>
+        </Route>
         <Route  path='/quiz/:id' component={QuizQuestions} />
         <Route  path='/start' component={StartQuiz} />
         <Route  path='/join/:id' component={Student_join} />

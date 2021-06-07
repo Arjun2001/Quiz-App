@@ -152,7 +152,7 @@ router.post('/add_questions',authenticateToken,(req,res ) => {
 });
 
 router.post('/contest_details',authenticateToken,(req,res ) => {
-  let output;
+  let output,output1;
     connection.query("select * from contest where id = ?;",[req.body.id], (err, results, fields) => {
       if (err) {
           res.status(201).json(err.sqlMessage);
@@ -165,7 +165,14 @@ router.post('/contest_details',authenticateToken,(req,res ) => {
       if (err) {
           res.status(201).json(err.sqlMessage);
       } else {
-        res.status(200).json({data:output,check:results});
+        output1 = results;
+      }
+    })
+    connection.query("SELECT count(roll_no) FROM result WHERE contest_id = ?;",[req.body.id], (err, results, fields) => {
+      if (err) {
+          res.status(201).json(err.sqlMessage);
+      } else {
+        res.status(200).json({data:output,check:output1,attended:results});
       }
     })
 });
@@ -198,15 +205,40 @@ router.get('/get_questions/:id',(req,res ) => {
 });
 
 router.post('/add_result',authenticateToken,(req,res) => {
-  let data = [[req.body.roll_no,req.body.contest_id,JSON.stringify(req.body.answer),req.body.publised,req.body.time]]
-    connection.query("insert into result (roll_no,contest_id,answer,published,time) values ?;",[data], (err, results, fields) => {
-      if (err) {
-        console.log(err)
-          res.status(201).json(err.sqlMessage);
-      } else {
-          res.status(200).json(results);
-      }
-    })
+  let data = [[req.body.roll_no,req.body.contest_id,JSON.stringify(req.body.answer),req.body.publised,req.body.time,req.body.total,req.body.maxMark]]
+  connection.query("insert into result (roll_no,contest_id,answer,published,time,total,max_mark) values ?;",[data], (err, results, fields) => {
+    if (err) {
+      console.log(err)
+        res.status(201).json(err.sqlMessage);
+    } else {
+        res.status(200).json(results);
+    }
+  })
+});
+
+router.get('/contest_avg/:id',(req,res) => {
+  console.log(req.params.id)
+  connection.query("select roll_no,total,max_mark from result where contest_id = ? and published = 1;",[req.params.id], (err, results, fields) => {
+    if (err) {
+      console.log(err)
+        res.status(201).json(err.sqlMessage);
+    } else {
+        res.status(200).json(results);
+    }
+  })
+});
+
+router.get('/subject_avg/:id',(req,res) => {
+  console.log(req.params.id)
+  connection.query("select id from contest where code = ?",[req.params.id], (err, results, fields) => {
+    if (err) {
+      console.log(err)
+        res.status(201).json(err.sqlMessage);
+    } else {
+        console.log(results)
+        res.status(200).json(results);
+    }
+  })
 });
 
 module.exports = router;

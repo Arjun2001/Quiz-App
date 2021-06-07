@@ -28,8 +28,9 @@ function StudentJoin() {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState(null);
   const [countdownTime, setCountdownTime] = useState(null);
-  const [isQuizCompleted, setIsQuizCompleted] = useState(false);
-  const [np, setNp] = useState(false); 
+  const [total, setTotal] = useState(0);
+  const [maxMark, setMaxMark] = useState(0);
+  const [np, setNp] = useState(true); 
   const [offline, setOffline] = useState(false);
   
   // const [ansType, setAnsType] = useState('')
@@ -76,15 +77,17 @@ function StudentJoin() {
   };
 
   const handleNext = (text) => {
+    setMaxMark(maxMark + parseInt(data[questionIndex].mark))
     let point = 0;
     if (text === "Descriptive") {
-      setNp(true)
+      setNp(false)
       point = 0
       const qna = questionsAndAnswers;
       qna.push({
         question: he.decode(data[questionIndex].question),
         user_answer: document.getElementById("textareavalue").value,
         correct_answer: data[questionIndex].answer,
+        q_type : data[questionIndex].choice,
         point
       });
       setQuestionsAndAnswers(qna);
@@ -94,12 +97,14 @@ function StudentJoin() {
       correct_answer = correct_answer.split(',')
       if (arraysMatch(userSlectedAns,correct_answer)) {
         point = parseInt(data[questionIndex].mark);
+        setTotal(total + point)
       }
       const qna = questionsAndAnswers;
       qna.push({
         question: he.decode(data[questionIndex].question),
         user_answer: userSlectedAns,
         correct_answer: correct_answer,
+        q_type : data[questionIndex].choice,
         point
       });
       setQuestionsAndAnswers(qna);
@@ -113,7 +118,7 @@ function StudentJoin() {
     if (questionIndex === data.length - 1) {
       try {
         const { hours, minutes, seconds } = timeConverter(timeTaken);
-        console.log("time taken = ",timeTaken,`${Number(hours)}h ${Number(minutes)}m ${Number(seconds)}s`)
+        console.log("time taken = ",timeTaken,`${Number(hours)}h ${Number(minutes)}m ${Number(seconds)}s`,total,point )
             axios ({
                 method:'post',
                 url: `http://localhost:5000/api/add_result`,
@@ -126,10 +131,13 @@ function StudentJoin() {
                     contest_id:window.location.pathname.substring(6),
                     answer:(questionsAndAnswers),
                     publised:np,
-                    time: `${Number(hours)}h ${Number(minutes)}m ${Number(seconds)}s`
+                    time: `${Number(hours)}h ${Number(minutes)}m ${Number(seconds)}s`,
+                    total : total + point,
+                    maxMark :maxMark + parseInt(data[questionIndex].mark)
                 }
             })
             .then(data => {
+              setLoading(true)
               console.log(data)
                 Swal.fire({
                   position: 'center',
@@ -140,6 +148,7 @@ function StudentJoin() {
                 })
               setTimeout(() => {
                 window.history.back();
+                setLoading(false)
               },100);
             })
         }catch (err) {
@@ -162,7 +171,7 @@ function StudentJoin() {
     setTimeout(() => {
       fetchData();
       setLoading(false)
-    },100)
+    },1000)
     
   },[1])
 

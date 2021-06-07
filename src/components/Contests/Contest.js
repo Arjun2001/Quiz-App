@@ -63,7 +63,7 @@ const Table = () => {
                 time = time.toISOString();
                 let st_time = res.data.data[0].START
                 let end_time = res.data.data[0].END
-                if ( st_time <= time && end_time > time ) {
+                if ( st_time <= time && end_time >= time ) {
                     Swal.fire({
                         title: 'Enter the passcode',
                         html: `<input type="password" id="pin" class="swal2-input">`,
@@ -174,7 +174,6 @@ const Table = () => {
                         <td>{convertTime(END)}</td>
                         <td className='opration'>
                             {localStorage.getItem('Role') === "Admin" ? <button className='button' onClick={() => {EditQuiz(ID)}}>Edit</button>:<div></div>}
-                            <button className='button'>Details</button>
                         </td>
                     </tr>
                 )

@@ -7,7 +7,7 @@ const ShareButton = () => {
       .share({
         title: document.title,
         text: 'Check out this quiz app — it rocks!',
-        url: 'https://safdarjamal.github.io/quiz-app/'
+        url: 'https://github.com/Arjun2001/Quiz-App/'
       })
       .then(() => console.log('Successfully shared'))
       .catch(error => console.log(error.message));
@@ -41,7 +41,7 @@ const ShareButton = () => {
           <Modal.Header className="ui center aligned">Share on</Modal.Header>
           <Modal.Content className="ui center aligned container">
             <a
-              href="https://www.facebook.com/sharer.php?u=https%3A//safdarjamal.github.io/quiz-app/"
+              href="https://www.facebook.com/sharer.php?u=https%3A//github.com/Arjun2001/Quiz-App/"
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -51,7 +51,7 @@ const ShareButton = () => {
               </Button>
             </a>
             <a
-              href="https://twitter.com/intent/tweet?url=https%3A//safdarjamal.github.io/quiz-app/&text=Check%20out%20this%20quiz%20app%20—%20it%20rocks!&via=_safdarjamal"
+              href="https://twitter.com/intent/tweet?url=https%3A//github.com/Arjun2001/Quiz-App/&text=Check%20out%20this%20quiz%20app%20—%20it%20rocks!&via=_quizApp"
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -61,7 +61,7 @@ const ShareButton = () => {
               </Button>
             </a>
             <a
-              href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fsafdarjamal.github.io%2Fquiz-app%2F"
+              href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fgithub.com/Arjun2001/Quiz-App%2Fquiz-app%2F"
               target="_blank"
               rel="noopener noreferrer"
             >

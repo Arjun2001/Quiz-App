@@ -88,6 +88,7 @@ function StudentJoin() {
         user_answer: document.getElementById("textareavalue").value,
         correct_answer: data[questionIndex].answer,
         q_type : data[questionIndex].choice,
+        max_point : parseInt(data[questionIndex].mark),
         point
       });
       setQuestionsAndAnswers(qna);
@@ -105,6 +106,7 @@ function StudentJoin() {
         user_answer: userSlectedAns,
         correct_answer: correct_answer,
         q_type : data[questionIndex].choice,
+        max_point : parseInt(data[questionIndex].mark),
         point
       });
       setQuestionsAndAnswers(qna);

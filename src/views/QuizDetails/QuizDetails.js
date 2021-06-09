@@ -67,7 +67,7 @@ const QuizDetails = ({ stud }) => {
       <Navbar/>
       <ReactFontLoader url="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@500&family=Roboto+Slab:wght@300;400;500&display=swap" />
       <div style={{fontStyle:"Roboto Slab",fontSize:"40px",marginLeft:"15%",color:"brown",marginTop:"2%",marginBottom:"1%"}}>
-        CONTEST NAME :  
+        CONTEST ID :  
       </div>
       <TableContainer
         component={Paper}
@@ -96,7 +96,7 @@ const QuizDetails = ({ stud }) => {
                 style={{ fontFamily: "Roboto Slab", fontSize: "25px" }}
               >
                 {" "}
-                Student Name
+                TIME TAKEN
               </StyledTableCell>
 
               <StyledTableCell
@@ -104,7 +104,7 @@ const QuizDetails = ({ stud }) => {
                 style={{ fontFamily: "Roboto Slab", fontSize: "25px" }}
               >
                 {" "}
-                Mark
+                PERCENTAGE
               </StyledTableCell>
               <StyledTableCell
                 align="center"

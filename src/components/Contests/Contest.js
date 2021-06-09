@@ -46,6 +46,14 @@ const Table = () => {
         history.push(`/quiz/${id}`)
     }
 
+    const Details = (id) => {
+        history.push(`/stats/${id}`)
+    }
+
+    const details_p = (id) => {
+        history.push(`/details/${id}`)
+    }
+
     const joinQuiz = (e) => {
         try {
             axios ({
@@ -151,8 +159,8 @@ const Table = () => {
                         <td>{convertTime(START)}</td>
                         <td>{convertTime(END)}</td>
                         <td className='opration'>
-                        {localStorage.getItem('Role') === "Admin" ? <button className='button' onClick={() => {EditQuiz(ID)}}>Edit</button>:<div></div>}
-                            <button className='button'>Details</button>
+                        {localStorage.getItem('Role') === "Admin" ? <><button className='button' onClick={() => {EditQuiz(ID)}}>Edit</button><button className='button' onClick={() => {details_p(ID)}}>Details</button></>:<div></div>}
+                            <button className='button' onClick={() => {Details(ID)}}>Details</button>
                         </td>
                     </tr>
                 )

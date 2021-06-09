@@ -305,6 +305,17 @@ router.post('/add_result',authenticateToken,(req,res) => {
   })
 });
 
+router.post('/get_result',authenticateToken,(req,res) => {
+  connection.query("SELECT * FROM RESULT WHERE ROLL_NO = ? AND CONTEST_ID = ?;",[req.body.roll,req.body.id], (err, results, fields) => {
+    if (err) {
+      console.log(err)
+        res.status(201).json(err.sqlMessage);
+    } else {
+        res.status(200).json(results);
+    }
+  })
+});
+
 router.get('/contest_avg/:id',(req,res) => {
   console.log(req.params.id)
   connection.query("select roll_no,total,max_mark from result where contest_id = ? and published = 1;",[req.params.id], (err, results, fields) => {

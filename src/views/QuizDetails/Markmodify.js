@@ -3,7 +3,8 @@ import React from "react";
 import axios from "axios";
 import TextField from "@material-ui/core/TextField";
 import Radio from "@material-ui/core/Radio";
-import InputLabel from "@material-ui/core/InputLabel";
+import Swal from 'sweetalert2'
+
 
 import "../../App.css";
 
@@ -13,13 +14,10 @@ import { makeStyles, withStyles } from "@material-ui/core/styles";
 import { Button } from "@material-ui/core";
 import RadioGroup from "@material-ui/core/RadioGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
-import FormControl from "@material-ui/core/FormControl";
-import Select from "@material-ui/core/Select";
 
 import CheckIcon from "@material-ui/icons/Check";
-import ToggleButton from "@material-ui/lab/ToggleButton";
 import AddIcon from "@material-ui/icons/Add";
-import MenuItem from "@material-ui/core/MenuItem";
+
 
 const theme = createMuiTheme({
   typography: {
@@ -76,45 +74,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const BootstrapInput = withStyles((theme) => ({
-  root: {
-    "label + &": {
-      marginTop: theme.spacing(3),
-    },
-  },
-  input: {
-    borderRadius: 4,
-    position: "relative",
-    backgroundColor: theme.palette.background.paper,
-    border: "1px solid #ced4da",
-    fontSize: 16,
-    padding: "10px 26px 10px 12px",
-    transition: theme.transitions.create(["border-color", "box-shadow"]),
-    fontFamily: [
-      "-apple-system",
-      "BlinkMacSystemFont",
-      '"Segoe UI"',
-      "Roboto",
-      '"Helvetica Neue"',
-      "Arial",
-      "sans-serif",
-      '"Apple Color Emoji"',
-      '"Segoe UI Emoji"',
-      '"Segoe UI Symbol"',
-    ].join(","),
-    "&:focus": {
-      borderRadius: 4,
-      borderColor: "#80bdff",
-      boxShadow: "0 0 0 0.2rem rgba(0,123,255,.25)",
-    },
-  },
-}))(InputBase);
 
-const Markmodify = (d) => {
+const Markmodify = ({item,index,roll,id}) => {
   const classes = useStyles();
-  console.log("hi");
-  console.log(d.q)
-  const [mark, setmark] = useState("");
+  const [mark,setmark] = useState(0)
   const [submitview, setsubmitview] = useState(false);
   const [view, setview] = useState(true);
 
@@ -123,29 +86,35 @@ const Markmodify = (d) => {
   const handleSubmit = () => {
     setview(false)
     setsubmitview(true);
-
-    // setsubmit("Updated");
-    const a=d.q.roll_no
-    const b=d.q.question_no
-    console.log(a)
-    console.log(b)
-    console.log(mark);
-
-   
-      axios
-        .post("http://localhost:5000/api/addmark ", {
-          a,b,mark
-
+    try {
+        axios ({
+          method:'post',
+          url: "http://localhost:5000/api/update_mark",
+          headers: {
+              "Authorization":`Bearer ${localStorage.getItem('Token')}`,
+              "Content-Type": "application/json"
+          },
+          data: {
+              mark:mark,roll:roll,id:id
+          }
+      }).then(res => {
+        console.log(res)
+        Swal.fire({
+          icon: 'success',
+          text: res.data
         })
-        .then(function (response) {
-          console.log(response.data);
-        });
-   
+      })
+  }catch (err) {
+    Swal.fire({
+      icon: 'error',
+      text: err
+    })
+  }
    
   };
   return (
     <div className={classes.quebox}>
-      <div>Question {d.q.question_no}</div>
+      <div>Question {index+1}</div>
       <div>
         {/* <label>Question+{d.q[0].question_no}</label> */}
         <TextField
@@ -154,7 +123,7 @@ const Markmodify = (d) => {
           // label={"Question " + (d.d + 1)}
           fullWidth
           style={{ margin: 8 }}
-          value={d.q.ques}
+          value={item.question}
           // onChange={(e) => setquestion(e.target.value)}
           InputProps={{
             shrink: true,
@@ -168,7 +137,7 @@ const Markmodify = (d) => {
           <RadioGroup
             aria-label="quiz"
             name="quiz"
-            value={d.q.type}
+            value={item.q_type}
             className={classes.radiostyle}
           >
             <ThemeProvider theme={theme}>
@@ -194,14 +163,14 @@ const Markmodify = (d) => {
             </ThemeProvider>
           </RadioGroup>
         </div>
-          {(d.q.type)=="MCQ"&&<div>
+          {(item.q_type)=="MCQ"&&<div>
           
             <TextField
               disabled
               id="outlined-full-width"
               //   className={classes.textField}
               style={{ margin: 8, width: "35%" }}
-              value={d.q.answer}
+              value={item.user_answer}
 
               // onChange={(e) => setans(e.target.value)}
               InputProps={{
@@ -213,7 +182,26 @@ const Markmodify = (d) => {
               variant="outlined"
             />
           </div>}
-          {(d.q.type)=="Descriptive"&&<div>
+          {(item.q_type)=="TandF"&&<div>
+          
+            <TextField
+              disabled
+              id="outlined-full-width"
+              //   className={classes.textField}
+              style={{ margin: 8, width: "35%" }}
+              value={item.user_answer}
+
+              // onChange={(e) => setans(e.target.value)}
+              InputProps={{
+                shrink: true,
+
+                classes: { notchedOutline: classes.specialOutline },
+              }}
+              margin="normal"
+              variant="outlined"
+            />
+          </div>}
+          {(item.q_type)=="Descriptive"&&<div>
               
             <TextField
               disabled
@@ -222,7 +210,7 @@ const Markmodify = (d) => {
               multiline
               fullWidth
               style={{ margin: 8 }}
-              value={d.q.answer}
+              value={item.user_answer}
               InputProps={{
                 shrink: true,
 
@@ -237,20 +225,19 @@ const Markmodify = (d) => {
             <TextField
               
               id="outlined-full-width"
-              
+              disabled = {item.q_type === "Descriptive" ? false: true}
               style={{ margin: 8, width: "20%" }}
-              value={d.q.mark}
               onChange={(e) => setmark(e.target.value)}
+              defaultValue={item.q_type === "Descriptive" ? 0: item.point}
               InputProps={{
                 shrink: true,
-
                 classes: { notchedOutline: classes.specialOutline },
               }}
               margin="normal"
               variant="outlined"
             />
           </div>
-        {!(d.q.mark) && (view)&&(
+        {(item.q_type === "Descriptive") && (view)&&(
           <Button
             variant="contained"
             color="primary"
@@ -261,7 +248,7 @@ const Markmodify = (d) => {
             Update
           </Button>
         )}
-        {(d.q.mark)&&(
+        {(item.q_type !== "Descriptive")&&(
           <Button
             variant="contained"
             color="primary"

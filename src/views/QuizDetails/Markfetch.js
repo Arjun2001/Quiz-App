@@ -1,4 +1,3 @@
-import useFetch from "./useFetch";
 import { useState,useEffect } from "react";
 import CheckIcon from "@material-ui/icons/Check";
 import { Button } from "@material-ui/core";
@@ -16,34 +15,28 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "#28b5b5",
   },
 }))
-const Markfetch = ({c}) => {
-  const classes = useStyles();
-
-    const [state, setstate] = useState([])
-var d = window.location.pathname.split("/")[2];
-
-const axios = require('axios')
-useEffect(() => {
-    console.log("sadsa")
-    axios.get('http://localhost:5000/api'+c, {
-    params: {
-        d
-    }
-  })
-  .then(function (response) {
-      setstate(response.data)
-
-    console.log(response);
-  })
-    
-}, [])
-
+const Markfetch = ({stud,roll,id}) => {
+const classes = useStyles();
 const handleSubmit=()=>{
-    window.location="/details"
+  try {
+    axios ({
+      method:'post',
+      url: "http://localhost:5000/api/update_published",
+      headers: {
+          "Authorization":`Bearer ${localStorage.getItem('Token')}`,
+          "Content-Type": "application/json"
+      },
+      data: {
+            roll:roll,id:id
+      }
+      }).then(res => {
+        console.log(res)
+        window.location=`/details/${id}`
+      })
+      }catch (err) {
+      console.log(err)
+    }
 }
-  
-    // const { error, isPending, data: stud } = useFetch('http://localhost:5000/api/'+c)
-    console.log(c,"vghbj")
     
     return (  
         
@@ -51,8 +44,7 @@ const handleSubmit=()=>{
           <Typography variant="h4"  style={{color:"black",marginTop:"2%",marginBottom:"1.5%",fontWeight:"bold"}}>
           UPDATE MARKS
           </Typography>
-            {console.log(state.length===0)}
-        {(state.length) ? state.map((i)=>{ return <Markmodify q={state,i}/>}):<div></div>}
+        {(stud.length) ? stud.map((i,index)=>{ return <Markmodify item={i} index={index} roll={roll} id={id}/>}):<div></div>}
         <div>
         <Button
             variant="contained"
@@ -68,5 +60,6 @@ const handleSubmit=()=>{
         </div>
     );
 }
+
  
 export default Markfetch

@@ -33,17 +33,8 @@ function App() {
         <Route  path='/contest/:id' component={Contests} />
         <Route  path='/reset/:id' component={ResetPassword} />
         <Route  path='/quiz' component={QuizQuestions} />
-        <Route  path='/details'>
+        <Route  path='/details/:id'>
         <QuizDet c={a}/>
-        </Route>
-        <Route  path='/pass'>
-        <QuizDet c={b}/>
-        </Route>
-        <Route  path='/fail'>
-        <QuizDet c={d}/>
-        </Route>
-        <Route  path='/order'>
-        <QuizDet c={e}/>
         </Route>
         <Route  path='/testdetails/:id'>
           <Navbar/>

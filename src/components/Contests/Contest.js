@@ -53,6 +53,11 @@ const Table = () => {
     const details_p = (id) => {
         history.push(`/details/${id}`)
     }
+    
+    const Average = (id) => {
+        history.push("/average")
+    }
+                // hast ot chenges when linked with average
 
     const joinQuiz = (e) => {
         try {
@@ -160,7 +165,7 @@ const Table = () => {
                         <td>{convertTime(END)}</td>
                         <td className='opration'>
                         {localStorage.getItem('Role') === "Admin" ? <><button className='button' onClick={() => {EditQuiz(ID)}}>Edit</button><button className='button' onClick={() => {details_p(ID)}}>Details</button></>:<div></div>}
-                            <button className='button' onClick={() => {Details(ID)}}>Details</button>
+                            {localStorage.getItem('Role') === "Student" ?<button className='button' onClick={() => {Details(ID)}}>Details</button> : <button className='button' onClick={() => {Average(ID)}}>Average</button>}
                         </td>
                     </tr>
                 )

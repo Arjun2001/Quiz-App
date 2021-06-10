@@ -262,8 +262,7 @@ router.post('/get_result',authenticateToken,(req,res) => {
 });
 
 router.get('/contest_avg/:id',(req,res) => {
-  console.log(req.params.id)
-  connection.query("select roll_no,total,max_mark from result where contest_id = ? and published = 1;",[req.params.id], (err, results, fields) => {
+  connection.query("select t1.roll_no,t1.contest_id,t1.total/t1.max_mark * 100 as mark,t2.a/t1.max_mark * 100  as avrg_m,t2.m/t1.max_mark * 100 as high_m,t1.published from result t1 inner join (select contest_id,avg(total) a,max(total) m,published from result where published = 1 and contest_id = ? group by contest_id,published)t2 on t1.contest_id = t2.contest_id and t1.published = t2.published;",[req.params.id], (err, results, fields) => {
     if (err) {
       console.log(err)
         res.status(201).json(err.sqlMessage);
@@ -273,9 +272,9 @@ router.get('/contest_avg/:id',(req,res) => {
   })
 });
 
+
 router.get('/subject_avg/:id',(req,res) => {
-  console.log(req.params.id)
-  connection.query("select id from contest where code = ?",[req.params.id], (err, results, fields) => {
+  connection.query("select t1.contest_id,avg(t1.total)/t1.max_mark * 100 as percentage from result t1 where published = 1 and contest_id in (select id from contest t2 where code=?) group by contest_id,max_mark;",[req.params.id], (err, results, fields) => {
     if (err) {
       console.log(err)
         res.status(201).json(err.sqlMessage);
@@ -285,5 +284,4 @@ router.get('/subject_avg/:id',(req,res) => {
     }
   })
 });
-
 module.exports = router;

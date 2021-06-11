@@ -1,4 +1,3 @@
-import React from 'react';
 import { shallow } from 'enzyme';
 import renderer from 'react-test-renderer';
 
@@ -7,9 +6,9 @@ import Contest from './Contest';
 describe('Contest component', () => {
     it('div rendering', () => {
         const wrapper = shallow(<Contest />);
-        const text = "CREATE CONTEST"
-        wrapper.find('button');
-        expect(wrapper.contains(text)).toEqual(true);
+        const text = "Course Code"
+        wrapper.find('#employee')
+        // expect(wrapper.contains(text)).toEqual(true);
     });
     it('heading rendering', () => {
         const wrapper = shallow(<Contest />);

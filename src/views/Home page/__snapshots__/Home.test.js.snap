@@ -10,6 +10,7 @@ exports[`Blog component matches the snapshot 1`] = `
       href="/home"
     >
       <img
+        alt="quiz-logo"
         src="https://cdn.pixabay.com/photo/2018/08/31/11/17/quiz-3644414_960_720.png"
         style={
           Object {
@@ -42,6 +43,19 @@ exports[`Blog component matches the snapshot 1`] = `
         className="navbar-nav"
         onKeyDown={[Function]}
       >
+        <a
+          className="btn btn-outline-warning"
+          href="/start"
+          onClick={[Function]}
+          onKeyDown={[Function]}
+          style={
+            Object {
+              "marginRight": "15px",
+            }
+          }
+        >
+          Demo
+        </a>
         <span
           className="navbar-text"
         >

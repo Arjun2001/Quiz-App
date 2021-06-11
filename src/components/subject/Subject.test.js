@@ -11,7 +11,7 @@ describe('Blog component', () => {
         expect(text).toEqual('SUBJECTS');
     });
 
-    it('div rendering', () => {
+    it('form rendering', () => {
         const wrapper = shallow(<Subject />);
         wrapper.find('form');
     });

@@ -27,10 +27,6 @@ app.use(function(req, res, next) {
  
              
 
-app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "build", "index.html"));
-});
-
 app.use('/user', user);
 app.use('/api', api);
 
@@ -70,9 +66,9 @@ app.post('/forgotpassword', (req,res) => {
   } 
 })
 
-app.get('*',(req, res, next) => {
-  res.sendFile(path.join(__dirname, "..", "build", "index.html"));
-});
+app.get('*',(req,res)=>{
+  res.sendFile(path.resolve('build/index.html'));
+})
 
 
 const PORT = process.env.PORT || 5000

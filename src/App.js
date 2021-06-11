@@ -14,7 +14,9 @@ import Markfetch from './views/QuizDetails/Markfetch';
 import Navbar from './components/Navbar/Navbar';
 import StartQuiz from './components/Quiz Host/QuizStart/QuizStart';
 import Student_join from './components/Student_join/StudentJoin'
-
+import Performance from './views/Performance/Performance'
+import SubjPer from './views/Performance/SubjPer';
+// import Per1 from './views/Performance/Per1'
 function App() {
   const a="/studData"
   const b="/studPass"
@@ -51,7 +53,12 @@ function App() {
         <Route  path='/quiz/:id' component={QuizQuestions} />
         <Route  path='/start' component={StartQuiz} />
         <Route  path='/join/:id' component={Student_join} />
-
+        <Route  path='/performance'>
+        <Performance/>
+        </Route>
+        <Route  path='/subjperformance'>
+        <SubjPer/>
+        </Route>
       </Switch>
       </BrowserRouter>
     </div>

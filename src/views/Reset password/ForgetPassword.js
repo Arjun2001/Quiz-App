@@ -10,7 +10,7 @@ const ForgetPassword = () => {
     let email = document.getElementById("email").value;
     document.getElementById("email").value = '';
     axios
-      .post('http://localhost:5000/forgotpassword',{email:email})
+      .post('http://35.225.238.45:5000/forgotpassword',{email:email})
       .then(res => {
         if (res.status === 200) {
           Swal.fire({

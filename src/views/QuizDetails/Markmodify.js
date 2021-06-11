@@ -89,7 +89,7 @@ const Markmodify = ({item,index,roll,id}) => {
     try {
         axios ({
           method:'post',
-          url: "http://localhost:5000/api/update_mark",
+          url: "http://35.225.238.45:5000/api/update_mark",
           headers: {
               "Authorization":`Bearer ${localStorage.getItem('Token')}`,
               "Content-Type": "application/json"

@@ -14,7 +14,7 @@ describe('VIew Latest Updates', function() {
     await driver.quit();
   })
   it('VIew Latest Updates', async function() {
-    await driver.get("http://localhost:3000/")
+    await driver.get("http://35.225.238.45:3000/")
     await driver.manage().window().setRect(858, 824)
     await driver.findElement(By.id("slide-right-button")).click()
     await driver.findElement(By.id("sign-in-form")).click()

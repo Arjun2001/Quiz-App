@@ -19,7 +19,7 @@ function Userprofile() {
         obj['roll_no'] = localStorage.getItem('Roll_no')
         axios ({
             method:'post',
-            url: "http://localhost:5000/api/update_profile",
+            url: "http://35.225.238.45:5000/api/update_profile",
             headers: {
                 "Authorization":`Bearer ${localStorage.getItem('Token')}`,
                 "Content-Type": "application/json"

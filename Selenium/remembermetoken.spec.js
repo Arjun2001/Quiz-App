@@ -14,7 +14,7 @@ describe('Remember me token', function() {
     await driver.quit();
   })
   it('Remember me token', async function() {
-    await driver.get("http://localhost:3000/")
+    await driver.get("http://35.225.238.45:3000/")
     await driver.manage().window().setRect(860, 824)
     await driver.findElement(By.id("slide-right-button")).click()
     await driver.findElement(By.name("roll_no")).click()

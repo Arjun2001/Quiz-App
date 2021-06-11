@@ -20,7 +20,7 @@ const Table = () => {
         try {
             await axios ({
                 method:'post',
-                url: "http://localhost:5000/api/contests",
+                url: "http://35.225.238.45:5000/api/contests",
                 headers: {
                     "Authorization":`Bearer ${localStorage.getItem('Token')}`,
                     "Content-Type": "application/json"
@@ -63,7 +63,7 @@ const Table = () => {
         try {
             axios ({
                 method:'post',
-                url: "http://localhost:5000/api/contest_details",
+                url: "http://35.225.238.45:5000/api/contest_details",
                 headers: {
                     "Authorization":`Bearer ${localStorage.getItem('Token')}`,
                     "Content-Type": "application/json"
@@ -217,7 +217,7 @@ const Table = () => {
             try {
                 axios ({
                     method:'post',
-                    url: "http://localhost:5000/api/create_contest",
+                    url: "http://35.225.238.45:5000/api/create_contest",
                     headers: {
                         "Authorization":`Bearer ${localStorage.getItem('Token')}`,
                         "Content-Type": "application/json"

@@ -14,7 +14,7 @@ describe('Register', function() {
     await driver.quit();
   })
   it('Register', async function() {
-    await driver.get("http://localhost:3000/")
+    await driver.get("http://35.225.238.45:3000/")
     await driver.manage().window().setRect(858, 824)
     await driver.findElement(By.css("#sign-up-form > input:nth-child(1)")).click()
     await driver.findElement(By.css("#sign-up-form > input:nth-child(1)")).sendKeys("18204")

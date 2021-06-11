@@ -47,7 +47,7 @@ const QuizQuestions = () => {
       try {
           axios ({
               method:'post',
-              url: "http://localhost:5000/api/contest_details",
+              url: "http://35.225.238.45:5000/api/contest_details",
               headers: {
                   "Authorization":`Bearer ${localStorage.getItem('Token')}`,
                   "Content-Type": "application/json"
@@ -110,7 +110,7 @@ const QuizQuestions = () => {
           try {
             axios ({
                 method:'post',
-                url: "http://localhost:5000/api/delete_contest",
+                url: "http://35.225.238.45:5000/api/delete_contest",
                 headers: {
                     "Authorization":`Bearer ${localStorage.getItem('Token')}`,
                     "Content-Type": "application/json"
@@ -155,7 +155,7 @@ const QuizQuestions = () => {
           try {
               axios ({
                   method:'post',
-                  url: "http://localhost:5000/api/create_contest",
+                  url: "http://35.225.238.45:5000/api/create_contest",
                   headers: {
                       "Authorization":`Bearer ${localStorage.getItem('Token')}`,
                       "Content-Type": "application/json"

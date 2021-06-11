@@ -21,7 +21,7 @@ const Result = () => {
     console.log(window.location.pathname)
     axios ({
         method:'POST',
-        url: `http://localhost:5000/api/get_result`,
+        url: `http://35.225.238.45:5000/api/get_result`,
         headers: {
             "Authorization":`Bearer ${localStorage.getItem('Token')}`,
             "Content-Type": "application/json"

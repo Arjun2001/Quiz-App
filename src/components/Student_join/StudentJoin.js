@@ -123,7 +123,7 @@ function StudentJoin() {
         console.log("time taken = ",timeTaken,`${Number(hours)}h ${Number(minutes)}m ${Number(seconds)}s`,total,point )
             axios ({
                 method:'post',
-                url: `http://localhost:5000/api/add_result`,
+                url: `http://35.225.238.45:5000/api/add_result`,
                 headers: {
                     "Authorization":`Bearer ${localStorage.getItem('Token')}`,
                     "Content-Type": "application/json"
@@ -207,7 +207,7 @@ function StudentJoin() {
         try {
             axios ({
                 method:'get',
-                url: `http://localhost:5000/api/get_questions/${id}`,
+                url: `http://35.225.238.45:5000/api/get_questions/${id}`,
                 headers: {
                     "Authorization":`Bearer ${localStorage.getItem('Token')}`,
                     "Content-Type": "application/json"

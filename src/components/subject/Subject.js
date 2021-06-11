@@ -20,7 +20,7 @@ function Subject(props) {
         try {
             const output = await axios ({
                 method:'POST',
-                url: "http://localhost:5000/api/courses",
+                url: "http://35.225.238.45:5000/api/courses",
                 headers: {
                     "Authorization":`Bearer ${localStorage.getItem('Token')}`,
                     "Content-Type": "application/json"
@@ -73,7 +73,7 @@ function Subject(props) {
         try {
             const output =  await axios ({
                 method:'POST',
-                url: "http://localhost:5000/api/insert_course",
+                url: "http://35.225.238.45:5000/api/insert_course",
                 headers: {
                     "Authorization":`Bearer ${localStorage.getItem('Token')}`,
                     "Content-Type": "application/json"

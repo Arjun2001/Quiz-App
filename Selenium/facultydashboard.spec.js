@@ -14,7 +14,7 @@ describe('Faculty dashboard', function() {
     await driver.quit();
   })
   it('Faculty dashboard', async function() {
-    await driver.get("http://localhost:3000/")
+    await driver.get("http://35.225.238.45:3000/")
     await driver.manage().window().setRect(1051, 806)
     await driver.findElement(By.id("slide-right-button")).click()
     await driver.findElement(By.name("roll_no")).click()

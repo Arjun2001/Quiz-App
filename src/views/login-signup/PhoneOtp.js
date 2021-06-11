@@ -13,9 +13,9 @@ function PhoneOtp() {
             firebase.app(); // if already initialized, use that one
          }
         const uiConfig = {
-        signInSuccessUrl: "http://localhost:3000/home/", //This URL is used to return to that page when we got success response for phone authentication.
+        signInSuccessUrl: "http://35.225.238.45:3000/home/", //This URL is used to return to that page when we got success response for phone authentication.
         signInOptions: [firebase.auth.PhoneAuthProvider.PROVIDER_ID],
-        tosUrl: "http://localhost:3000/home/"
+        tosUrl: "http://35.225.238.45:3000/home/"
         };
         if(firebaseui.auth.AuthUI.getInstance()) {
             const ui = firebaseui.auth.AuthUI.getInstance()

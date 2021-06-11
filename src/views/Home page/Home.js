@@ -12,7 +12,7 @@ function Home() {
         try {
             axios ({
                 method:'get',
-                url: "http://localhost:5000/api/who",
+                url: "http://35.225.238.45:5000/api/who",
                 headers: {
                     "Authorization":`Bearer ${localStorage.getItem('Token')}`,
                     "Content-Type": "application/json"

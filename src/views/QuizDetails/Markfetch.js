@@ -21,7 +21,7 @@ const handleSubmit=()=>{
   try {
     axios ({
       method:'post',
-      url: "http://localhost:5000/api/update_published",
+      url: "http://35.225.238.45:5000/api/update_published",
       headers: {
           "Authorization":`Bearer ${localStorage.getItem('Token')}`,
           "Content-Type": "application/json"

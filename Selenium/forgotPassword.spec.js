@@ -14,7 +14,7 @@ describe('Forgot Password', function() {
     await driver.quit();
   })
   it('Forgot Password', async function() {
-    await driver.get("http://localhost:3000/")
+    await driver.get("http://35.225.238.45:3000/")
     await driver.manage().window().setRect(858, 824)
     await driver.findElement(By.id("slide-right-button")).click()
     await driver.findElement(By.css(".forgot-password")).click()

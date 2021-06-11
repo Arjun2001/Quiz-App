@@ -67,7 +67,7 @@ function Login_signup() {
         // }else {Swal("Password Is Not Provided")}
         // // validation
         axios
-        .post('http://localhost:5000/user/signup',{data:obj})
+        .post('http://35.225.238.45:5000/user/signup',{data:obj})
         .then(res => {
             localStorage.setItem("Token", res.data.token)
             localStorage.setItem("Roll_no", res.data.roll_no)
@@ -100,7 +100,7 @@ function Login_signup() {
             }
         }
         axios
-        .post('http://localhost:5000/user/signin',{data:obj})
+        .post('http://35.225.238.45:5000/user/signin',{data:obj})
         .then(res => {
             localStorage.setItem('Token',res.data.token)
             localStorage.setItem('Roll_no',res.data.roll_no)
@@ -137,7 +137,7 @@ function Login_signup() {
                 console.log(result)
                 /** @type {firebase.auth.OAuthCredential} */
                 axios
-                .post('http://localhost:5000/user/signin',{data:{email :result.user.email}})
+                .post('http://35.225.238.45:5000/user/signin',{data:{email :result.user.email}})
                 .then(res => {
                 if (res.status === 200) {
                     Swal.fire({

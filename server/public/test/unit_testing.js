@@ -8,7 +8,7 @@ const data = require('./testconfig');
 var token;
 chai.use(chaiHttp);
 
-const url = 'http://localhost:5000'
+const url = 'http://35.225.238.45:5000'
 
 describe('Backend hosted', () => {
     it('initial get request', (done) => {

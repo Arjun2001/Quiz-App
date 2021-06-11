@@ -11,6 +11,7 @@ import Button from "@material-ui/core/Button";
 import ReactFontLoader from "react-font-loader";
 import Navbar from '../../components/Navbar/Navbar'
 import SendIcon from "@material-ui/icons/Send";
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -55,6 +56,8 @@ const QuizDetails = ({ stud,swap }) => {
       <Navbar/>
       <br/>
       <br/>
+      <ArrowBackIcon style={{margin:"0px 0px 0px 25px",borderRadius:"50%",background:"white",cursor:"pointer",fontSize:"2.5rem"}} onClick={()=>{window.history.back()}}></ArrowBackIcon>
+      <br />
       <ReactFontLoader url="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@500&family=Roboto+Slab:wght@300;400;500&display=swap" />
       <TableContainer
         component={Paper}

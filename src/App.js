@@ -46,7 +46,7 @@ function App() {
         <Route  path='/quiz/:id' component={QuizQuestions} />
         <Route  path='/start' component={StartQuiz} />
         <Route  path='/join/:id' component={Student_join} />
-        <Route  path='/performance'>
+        <Route  path='/performance/:id'>
         <Performance/>
         </Route>
         <Route  path='/subjperformance'>

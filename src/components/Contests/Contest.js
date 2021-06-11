@@ -55,7 +55,7 @@ const Table = () => {
     }
     
     const Average = (id) => {
-        history.push("/average")
+        history.push(`/performance/${id}`)
     }
                 // hast ot chenges when linked with average
 

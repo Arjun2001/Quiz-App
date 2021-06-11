@@ -1,9 +1,10 @@
 const express = require('express');
 const cors = require('cors');
 // const morgan = require('morgan');
-const user = require('./routes/user');
-const api = require('./routes/api');
+const user = require('./public/routes/user');
+const api = require('./public/routes/api');
 require('dotenv').config();
+const path = require("path");
 
 const nodemailer = require('nodemailer');
 const app = express();
@@ -14,6 +15,7 @@ app.use(express.json());
 // parse urlencoded request body
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
+app.use(express.static("build"));
 // app.use(morgan("default"));
 
 app.use(function(req, res, next) {
@@ -25,8 +27,8 @@ app.use(function(req, res, next) {
  
              
 
-app.get('/', (req,res) => {
-  res.json("welcome")
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "build", "index.html"));
 });
 
 app.use('/user', user);
@@ -68,9 +70,12 @@ app.post('/forgotpassword', (req,res) => {
   } 
 })
 
+app.get('*',(req, res, next) => {
+  res.sendFile(path.join(__dirname, "..", "build", "index.html"));
+});
 
 
-const PORT = 5000 || process.env.PORT
+const PORT = process.env.PORT || 5000
 app.listen(PORT , () => {
     console.log(`Listening to port ${PORT}`);
   });

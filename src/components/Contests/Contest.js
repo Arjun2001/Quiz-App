@@ -46,6 +46,19 @@ const Table = () => {
         history.push(`/quiz/${id}`)
     }
 
+    const Details = (id) => {
+        history.push(`/stats/${id}`)
+    }
+
+    const details_p = (id) => {
+        history.push(`/details/${id}`)
+    }
+    
+    const Average = (id) => {
+        history.push("/average")
+    }
+                // hast ot chenges when linked with average
+
     const joinQuiz = (e) => {
         try {
             axios ({
@@ -63,7 +76,7 @@ const Table = () => {
                 time = time.toISOString();
                 let st_time = res.data.data[0].START
                 let end_time = res.data.data[0].END
-                if ( st_time <= time && end_time > time ) {
+                if ( st_time <= time && end_time >= time ) {
                     Swal.fire({
                         title: 'Enter the passcode',
                         html: `<input type="password" id="pin" class="swal2-input">`,
@@ -151,8 +164,8 @@ const Table = () => {
                         <td>{convertTime(START)}</td>
                         <td>{convertTime(END)}</td>
                         <td className='opration'>
-                        {localStorage.getItem('Role') === "Admin" ? <button className='button' onClick={() => {EditQuiz(ID)}}>Edit</button>:<div></div>}
-                            <button className='button'>Details</button>
+                        {localStorage.getItem('Role') === "Admin" ? <><button className='button' onClick={() => {EditQuiz(ID)}}>Edit</button><button className='button' onClick={() => {details_p(ID)}}>Details</button></>:<div></div>}
+                            {localStorage.getItem('Role') === "Student" ?<button className='button' onClick={() => {Details(ID)}}>Details</button> : <button className='button' onClick={() => {Average(ID)}}>Average</button>}
                         </td>
                     </tr>
                 )
@@ -174,7 +187,6 @@ const Table = () => {
                         <td>{convertTime(END)}</td>
                         <td className='opration'>
                             {localStorage.getItem('Role') === "Admin" ? <button className='button' onClick={() => {EditQuiz(ID)}}>Edit</button>:<div></div>}
-                            <button className='button'>Details</button>
                         </td>
                     </tr>
                 )

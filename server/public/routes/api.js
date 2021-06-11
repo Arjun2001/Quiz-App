@@ -152,96 +152,42 @@ router.post('/add_questions',authenticateToken,(req,res ) => {
     });
   }
 )
-router.get("/studData", (req, res) => {
-  connection.query(
-    "select roll_no,count(question_no)as quesnos,count(mark) as markobtained from attend group by roll_no",
-    (req, result) => {
-      d = result.length;
-      for (i = 0; i < result.length; i++) {
-        if (result[i].quesnos == result[i].markobtained) {
-          connection.query(
-            `select roll_no,sum(mark) as sum from attend where roll_no="${result[i].roll_no}"`,
-            (req, result1) => {
-              console.log(result1);
-              console.log(result1[0].sum);
-              console.log(result1[0].roll_no);
-              connection.query(
-                `Update mark set mark="${result1[0].sum}" where roll_no="${result1[0].roll_no}"`,
-                (req, result2) => {
-                  console.log("success");
-                }
-              );
-            }
-          );
-        } else {
-          a = "null";
-          console.log(result[i].roll_no)
-          connection.query(
-            `Update mark set mark=null where roll_no="${result[i].roll_no}"`,
-            (req, result2) => {
-              console.log("fail");
-            }
-          );
-        }
-        
-      }
-        if(d==i){
-          connection.query("select * from mark", (req, result) => {
-            res.json(result);
-          });
-        }
-          
-        
-      
+router.post("/attended_students", (req, res) => {
+  console.log(req.body)
+  connection.query("select a.*,b.username from result a,profile b where b.roll_no = a.roll_no and a.contest_id = ?;",[req.body.id], (err, results, fields) => {
+    if (err) {
+        res.status(201).json(err.sqlMessage);
+    } else {
+        res.status(200).json(results);
     }
-  );
+  });
 });
-router.get('/studPass', (req, res) => {
-  connection.query("select * from mark where mark>=50",(req,result)=>{
-      res.json(result)
-  })
-  
-});
-router.get('/studFail', (req, res) => {
-  connection.query("select * from mark where mark<50",(req,result)=>{
-      res.json(result)
-  })
-  
-});
-router.get('/Rollorder', (req, res) => {
-  connection.query("select * from mark w order by roll_no asc",(req,result)=>{
-      res.json(result)
-  })
-  
-});
-router.get('/markfetch', (req, res) => {
-  
-  const a=req.query.d
-  connection.query(`select * from attend where roll_no="${a}"`,(req,result)=>{
-      res.json(result)
-  })
-  
-});
-router.post('/addmark', (req, res) => {
-  var{a,b,mark}=req.body
-  console.log(a,b,mark)
-  connection.query(`UPDATE attend SET mark="${mark}" WHERE roll_no="${a}" and question_no="${b}"`,(req,result)=>{
-    connection.query(
-      `select roll_no,sum(mark) as sum from attend where roll_no="${a}"`,
-      (req, result1) => {
-        connection.query(
-          `Update mark set mark="${result1[0].sum}" where roll_no="${a}"`,
-          (req, result2) => {
-          })
-      })
-      res.json("Added")
+
+router.post('/update_mark', (req, res) => {
+  connection.query("update result set total = total + ? where roll_no = ? and contest_id= ?;",[req.body.mark,req.body.roll,req.body.id], (err, results, fields) => {
+    if (err) {
+        res.status(201).json(err.sqlMessage);
+    } else {
+      res.status(200).json("Updated Successfully!!");
+    }
   })
 });
+
+router.post('/update_published', (req, res) => {
+  connection.query("update result set published = 1  where roll_no = ? and contest_id= ?;",[req.body.roll,req.body.id], (err, results, fields) => {
+    if (err) {
+        res.status(201).json(err.sqlMessage);
+    } else {
+      res.status(200).json("Updated Successfully!!");
+    }
+  })
+});
+
  
 
 
 router.post('/contest_details',authenticateToken,(req,res ) => {
-  let output;
+  let output,output1;
     connection.query("select * from contest where id = ?;",[req.body.id], (err, results, fields) => {
       if (err) {
           res.status(201).json(err.sqlMessage);
@@ -254,14 +200,20 @@ router.post('/contest_details',authenticateToken,(req,res ) => {
       if (err) {
           res.status(201).json(err.sqlMessage);
       } else {
-        res.status(200).json({data:output,check:results});
+        output1 = results;
+      }
+    })
+    connection.query("SELECT count(roll_no) FROM result WHERE contest_id = ?;",[req.body.id], (err, results, fields) => {
+      if (err) {
+          res.status(201).json(err.sqlMessage);
+      } else {
+        res.status(200).json({data:output,check:output1,attended:results});
       }
     })
 });
 
 router.get('/get_questions/:id',(req,res ) => {
   let id = req.params.id;
-  console.log("sdasd",id)
   let output1;
     connection.query("select * from contest where id = ?;",[id], (err, results, fields) => {
       if (err) {
@@ -287,15 +239,49 @@ router.get('/get_questions/:id',(req,res ) => {
 });
 
 router.post('/add_result',authenticateToken,(req,res) => {
-  let data = [[req.body.roll_no,req.body.contest_id,JSON.stringify(req.body.answer),req.body.publised,req.body.time]]
-    connection.query("insert into result (roll_no,contest_id,answer,published,time) values ?;",[data], (err, results, fields) => {
-      if (err) {
-        console.log(err)
-          res.status(201).json(err.sqlMessage);
-      } else {
-          res.status(200).json(results);
-      }
-    })
+  let data = [[req.body.roll_no,req.body.contest_id,JSON.stringify(req.body.answer),req.body.publised,req.body.time,req.body.total,req.body.maxMark]]
+  connection.query("insert into result (roll_no,contest_id,answer,published,time,total,max_mark) values ?;",[data], (err, results, fields) => {
+    if (err) {
+      console.log(err)
+        res.status(201).json(err.sqlMessage);
+    } else {
+        res.status(200).json(results);
+    }
+  })
 });
 
+router.post('/get_result',authenticateToken,(req,res) => {
+  connection.query("SELECT * FROM RESULT WHERE ROLL_NO = ? AND CONTEST_ID = ?;",[req.body.roll,req.body.id], (err, results, fields) => {
+    if (err) {
+      console.log(err)
+        res.status(201).json(err.sqlMessage);
+    } else {
+        res.status(200).json(results);
+    }
+  })
+});
+
+router.get('/contest_avg/:id',(req,res) => {
+  connection.query("select t1.roll_no,t1.contest_id,t1.total/t1.max_mark * 100 as mark,t2.a/t1.max_mark * 100  as avrg_m,t2.m/t1.max_mark * 100 as high_m,t1.published from result t1 inner join (select contest_id,avg(total) a,max(total) m,published from result where published = 1 and contest_id = ? group by contest_id,published)t2 on t1.contest_id = t2.contest_id and t1.published = t2.published;",[req.params.id], (err, results, fields) => {
+    if (err) {
+      console.log(err)
+        res.status(201).json(err.sqlMessage);
+    } else {
+        res.status(200).json(results);
+    }
+  })
+});
+
+
+router.get('/subject_avg/:id',(req,res) => {
+  connection.query("select t1.contest_id,avg(t1.total)/t1.max_mark * 100 as percentage from result t1 where published = 1 and contest_id in (select id from contest t2 where code=?) group by contest_id,max_mark;",[req.params.id], (err, results, fields) => {
+    if (err) {
+      console.log(err)
+        res.status(201).json(err.sqlMessage);
+    } else {
+        console.log(results)
+        res.status(200).json(results);
+    }
+  })
+});
 module.exports = router;

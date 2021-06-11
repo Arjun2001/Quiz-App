@@ -68,7 +68,7 @@ connection.query('create table questions(contest varchar(255) not null,question 
 
 //  result table
 
-connection.query('CREATE TABLE result(roll_no INT not null,contest_id int not null,answer JSON,published bool,time varchar(255));',(err, rows) => {
+connection.query('CREATE TABLE result(roll_no INT not null,contest_id int not null,answer JSON,published bool,time varchar(255),max_mark INT,total INT,PRIMARY KEY(roll_no,contest_id));',(err, rows) => {
     if(err) {
         console.log(err.sqlMessage,'result table error');
     } else{ 

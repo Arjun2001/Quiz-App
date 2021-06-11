@@ -7,18 +7,9 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
-import { useState } from "react";
 import Button from "@material-ui/core/Button";
-
-import { Link } from "react-router-dom";
-
-import ImportExportIcon from "@material-ui/icons/ImportExport";
-import IconButton from "@material-ui/core/IconButton";
-import DoneOutlineIcon from "@material-ui/icons/DoneOutline";
-import ClearIcon from "@material-ui/icons/Clear";
 import ReactFontLoader from "react-font-loader";
 import Navbar from '../../components/Navbar/Navbar'
-import { StepButton } from "@material-ui/core";
 import SendIcon from "@material-ui/icons/Send";
 
 const StyledTableCell = withStyles((theme) => ({
@@ -51,24 +42,20 @@ const useStyles = makeStyles({
   },
 });
 
-const QuizDetails = ({ stud }) => {
+const QuizDetails = ({ stud,swap }) => {
   console.log(stud)
   const classes = useStyles();
   
   const handleSubmit = (value) => {
-    console.log(value);
-    console.log("hi");
-
-    window.location="/testdetails/"+value
+    swap(value)
   };
   return (
     <div style={{ backgroundColor: "#FAE2E2" }}>
      
       <Navbar/>
+      <br/>
+      <br/>
       <ReactFontLoader url="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@500&family=Roboto+Slab:wght@300;400;500&display=swap" />
-      <div style={{fontStyle:"Roboto Slab",fontSize:"40px",marginLeft:"15%",color:"brown",marginTop:"2%",marginBottom:"1%"}}>
-        CONTEST NAME :  
-      </div>
       <TableContainer
         component={Paper}
         style={{
@@ -85,33 +72,46 @@ const QuizDetails = ({ stud }) => {
             <TableRow>
               <StyledTableCell
                 align="center"
-                style={{ fontFamily: "Roboto Slab", fontSize: "25px" }}
+                style={{ fontFamily: "Roboto Slab", fontSize: "15px" }}
               >
                 {" "}
-                Roll no
+                ROLL NO
               </StyledTableCell>
 
               <StyledTableCell
                 align="center"
-                style={{ fontFamily: "Roboto Slab", fontSize: "25px" }}
+                style={{ fontFamily: "Roboto Slab", fontSize: "15px" }}
               >
                 {" "}
-                Student Name
+                NAME
               </StyledTableCell>
 
               <StyledTableCell
                 align="center"
-                style={{ fontFamily: "Roboto Slab", fontSize: "25px" }}
+                style={{ fontFamily: "Roboto Slab", fontSize: "15px" }}
               >
                 {" "}
-                Mark
+                SCORE
               </StyledTableCell>
               <StyledTableCell
                 align="center"
-                style={{ fontFamily: "Roboto Slab", fontSize: "25px" }}
+                style={{ fontFamily: "Roboto Slab", fontSize: "15px" }}
               >
                 {" "}
-                Proceed
+                MAX SCORE
+              </StyledTableCell>
+              <StyledTableCell
+                align="center"
+                style={{ fontFamily: "Roboto Slab", fontSize: "15px" }}
+              >
+                {" "}
+                DURATION
+              </StyledTableCell>
+              <StyledTableCell
+                align="center"
+                style={{ fontFamily: "Roboto Slab", fontSize: "15px" }}
+              >
+                {" "}
               </StyledTableCell>
                  
             </TableRow>
@@ -125,29 +125,52 @@ const QuizDetails = ({ stud }) => {
                   component="th"
                   scope="row"
                   align="center"
-                  style={{ fontFamily: "Roboto Slab", fontSize: "25px" }}
+                  style={{ fontFamily: "Roboto Slab", fontSize: "15px" }}
                 >
                   {row.roll_no}
                 </StyledTableCell>
                 <StyledTableCell
                   align="center"
-                  style={{ fontFamily: "Roboto Slab", fontSize: "25px" }}
+                  style={{ fontFamily: "Roboto Slab", fontSize: "15px" }}
                 >
-                  {row.name}
+                  {row.username}
                 </StyledTableCell>
-                {row.mark>=50 ?(<StyledTableCell
+                {row.published === 1? 
+                <>
+                {(parseInt((row.total/row.max_mark)*100))>=40 ?(<StyledTableCell
                   align="center"
-                  style={{ fontFamily: "Roboto Slab", fontSize: "25px",color: "green", }}
+                  style={{ fontFamily: "Roboto Slab", fontSize: "15px",color: "green", }}
                 >
-                  {row.mark}
+                  {row.total}
                 </StyledTableCell>):(
                   <StyledTableCell
                   align="center"
-                  style={{ fontFamily: "Roboto Slab", fontSize: "25px" ,color: "red",}}
+                  style={{ fontFamily: "Roboto Slab", fontSize: "15px" ,color: "red",}}
                 >
-                  {row.mark}
+                  {row.total}
                 </StyledTableCell>
                 )}
+                </>:<>
+                <StyledTableCell
+                  align="center"
+                  style={{ fontFamily: "Roboto Slab", fontSize: "15px" ,color: "red",}}
+                >
+                  {"NP"}
+                </StyledTableCell>
+                </>}
+                
+                <StyledTableCell
+                  align="center"
+                  style={{ fontFamily: "Roboto Slab", fontSize: "15px" }}
+                >
+                  {row.max_mark}
+                </StyledTableCell>
+                <StyledTableCell
+                  align="center"
+                  style={{ fontFamily: "Roboto Slab", fontSize: "15px" }}
+                >
+                  {row.time}
+                </StyledTableCell>
                
                   <StyledTableCell align="center">
                     <Button
@@ -164,27 +187,8 @@ const QuizDetails = ({ stud }) => {
               
               </StyledTableRow>
               ))}
-            {/* ))} */}
           </TableBody>
         </Table>
-        <div style={{ marginLeft: "82%" }}>
-          <IconButton color="inherit" aria-label="menu">
-            <Link to="/order" className={classes.lg1}>
-              <ImportExportIcon />
-            </Link>
-          </IconButton>
-
-          <IconButton color="inherit" aria-label="menu">
-            <Link to="/pass" className={classes.lg}>
-              <DoneOutlineIcon />
-            </Link>
-          </IconButton>
-          <IconButton color="inherit" aria-label="menu">
-            <Link to="/fail" className={classes.lg}>
-              <ClearIcon />
-            </Link>
-          </IconButton>
-        </div>
       </TableContainer>
     </div>
   );

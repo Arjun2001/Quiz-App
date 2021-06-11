@@ -17,6 +17,8 @@ import Student_join from './components/Student_join/StudentJoin'
 import Performance from './views/Performance/Performance'
 import SubjPer from './views/Performance/SubjPer';
 // import Per1 from './views/Performance/Per1'
+import Result from './components/Student_join/Result'
+
 function App() {
   const a="/studData"
   const b="/studPass"
@@ -34,17 +36,8 @@ function App() {
         <Route  path='/contest/:id' component={Contests} />
         <Route  path='/reset/:id' component={ResetPassword} />
         <Route  path='/quiz' component={QuizQuestions} />
-        <Route  path='/details'>
+        <Route  path='/details/:id'>
         <QuizDet c={a}/>
-        </Route>
-        <Route  path='/pass'>
-        <QuizDet c={b}/>
-        </Route>
-        <Route  path='/fail'>
-        <QuizDet c={d}/>
-        </Route>
-        <Route  path='/order'>
-        <QuizDet c={e}/>
         </Route>
         <Route  path='/testdetails/:id'>
           <Navbar/>
@@ -59,6 +52,8 @@ function App() {
         <Route  path='/subjperformance'>
         <SubjPer/>
         </Route>
+        <Route  path='/stats/:id' component={Result} />
+
       </Switch>
       </BrowserRouter>
     </div>

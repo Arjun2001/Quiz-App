@@ -4,11 +4,13 @@ import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardMedia from '@material-ui/core/CardMedia';
 import CardContent from '@material-ui/core/CardContent';
+import CardActions from '@material-ui/core/CardActions';
 import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import { red } from '@material-ui/core/colors';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
+import DataUsageIcon from '@material-ui/icons/DataUsage';
 
 import {useHistory} from "react-router-dom"
 
@@ -45,7 +47,6 @@ export default function SubCard(props) {
   }
 
   return (
-    <div onClick={contest}>
     <Card className={classes.root}>
       <CardHeader
         avatar={
@@ -61,6 +62,7 @@ export default function SubCard(props) {
         title = {props.code}
         subheader= {props.name}
       />
+      <div className="click-class" onClick={contest}>
       <CardMedia
         className={classes.media}
         image = {props.photo}
@@ -71,7 +73,12 @@ export default function SubCard(props) {
           {props.desc}
         </Typography>
       </CardContent>
+      </div>
+      <CardActions disableSpacing>
+        <IconButton aria-label="add to favorites">
+          <DataUsageIcon />
+        </IconButton>
+      </CardActions >
     </Card>
-    </div>
   );
 }

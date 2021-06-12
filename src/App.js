@@ -49,7 +49,7 @@ function App() {
         <Route  path='/performance/:id'>
         <Performance/>
         </Route>
-        <Route  path='/subjperformance'>
+        <Route  path='/subjperformance/:id'>
         <SubjPer/>
         </Route>
         <Route  path='/stats/:id' component={Result} />

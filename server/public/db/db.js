@@ -1,8 +1,8 @@
 const mySql = require('mysql');
-// 35.238.233.86,sdfsa
+// 35.238.233.86,sdfsa 35.192.26.172
 
 var connection = mySql.createConnection({
-    host: "35.238.233.86",
+    host: "35.192.26.172",
     user: 'root',
     password: "password",
     database: "quiz",    

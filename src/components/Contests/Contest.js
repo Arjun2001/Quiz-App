@@ -134,7 +134,7 @@ const Table = () => {
             myDate.setDate(myDate.getDate() + parseInt(1));
             myDate.toISOString();
             let sdf = new  Date(myDate).toISOString();
-            if ((now < START) && (sdf > START)) {
+            if ((now <= START) && (now > END)) {
                 return (
                     <tr key={ID}>
                         <td>{ID}</td>

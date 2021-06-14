@@ -38,6 +38,7 @@ const Table = () => {
 
     const convertTime = (START) => {
         let time = new  Date(START);
+        time = time.toISOString();
         time = (new Date(time).toLocaleString(undefined, {timeZone: 'Asia/Kolkata'}))
         return time;
     }
@@ -130,6 +131,7 @@ const Table = () => {
         return contest && contest.map(({CODE,END,START,NAME,ID},index) => {
             let now = new Date();
             now = now.toISOString();
+            now = (new Date(now).toLocaleString(undefined, {timeZone: 'Asia/Kolkata'}))
             
             if ((now <= START) && (now > END)) {
                 return (
@@ -152,6 +154,7 @@ const Table = () => {
         return contest && contest.map(({CODE,END,START,NAME,ID},index) => {
             let now = new Date();
             now = now.toISOString();
+            now = (new Date(now).toLocaleString(undefined, {timeZone: 'Asia/Kolkata'}))
             if (now > START) {
                 return (
                     <tr key={ID}>
@@ -174,6 +177,7 @@ const Table = () => {
         return contest && contest.map(({CODE,END,START,NAME,ID},index) => {
             let now = new Date();
             now = now.toISOString();
+            now = (new Date(now).toLocaleString(undefined, {timeZone: 'Asia/Kolkata'}))
             if (now < START) {
                 return (
                     <tr key={ID}>

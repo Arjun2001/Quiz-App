@@ -75,7 +75,7 @@ router.post('/create_contest',authenticateToken,(req, res) => {
   if (req.role === "Admin") {
     if (req.body.id) {
       let data = [req.body.name,req.body.start,req.body.end,req.body.passcode,true,req.body.id]
-      connection.query(`update CONTEST set NAME = ?, START = ?, END = ?, passcode = ?, active = ? WHERE id = ?;`,data,(err, results, fields) => {
+      connection.query(`update contest set NAME = ?, START = ?, END = ?, passcode = ?, active = ? WHERE id = ?;`,data,(err, results, fields) => {
         if (err) {
             res.status(201).json(err.sqlMessage);
         } else {
@@ -84,7 +84,7 @@ router.post('/create_contest',authenticateToken,(req, res) => {
       })
     } else {
       let data = [[req.body.code,req.body.name,req.body.start,req.body.end,req.body.passcode,true]]
-      connection.query("insert into CONTEST (code,name,start,end,passcode,ACTIVE) VALUES ?;",[data], (err, results, fields) => {
+      connection.query("insert into contest (code,name,start,end,passcode,ACTIVE) VALUES ?;",[data], (err, results, fields) => {
         if (err) {
             res.status(201).json(err.sqlMessage);
         } else {
@@ -98,12 +98,12 @@ router.post('/create_contest',authenticateToken,(req, res) => {
 
 
 router.post('/delete_contest',authenticateToken,(req, res) => {
-  connection.query("delete from CONTEST where id = ?;",[req.body.id], (err, results, fields) => {
+  connection.query("delete from contest where id = ?;",[req.body.id], (err, results, fields) => {
     if (err) {
       console.log(err)  
         res.status(201).json(err.sqlMessage);
     } else {
-        res.status(200).json("CONTEST deleted successfully")
+        res.status(200).json("contest deleted successfully")
     }
   })
 });
@@ -112,7 +112,7 @@ router.post('/delete_contest',authenticateToken,(req, res) => {
 router.post('/contests',authenticateToken, (req,res ) => {
   if (req.body.code !== "None") {
     console.log("inseide")
-    connection.query("select * from CONTEST where code = ?;",[req.body.code], (err, results, fields) => {
+    connection.query("select * from contest where code = ?;",[req.body.code], (err, results, fields) => {
       if (err) {
           res.status(201).json(err.sqlMessage);
       } else {
@@ -120,7 +120,7 @@ router.post('/contests',authenticateToken, (req,res ) => {
       }
     })
   } else {
-    connection.query("select * from CONTEST;", (err, results, fields) => {
+    connection.query("select * from contest;", (err, results, fields) => {
       if (err) {
           res.status(201).json(err.sqlMessage);
       } else {
@@ -189,7 +189,7 @@ router.post('/update_published', (req, res) => {
 
 router.post('/contest_details',authenticateToken,(req,res ) => {
   let output,output1;
-    connection.query("select * from CONTEST where id = ?;",[req.body.id], (err, results, fields) => {
+    connection.query("select * from contest where id = ?;",[req.body.id], (err, results, fields) => {
       if (err) {
           res.status(201).json(err.sqlMessage);
       } else {
@@ -197,7 +197,7 @@ router.post('/contest_details',authenticateToken,(req,res ) => {
       }
     })
     
-    connection.query("SELECT count(CONTEST) FROM questions WHERE CONTEST = ?;",[req.body.id], (err, results, fields) => {
+    connection.query("SELECT count(contest) FROM questions WHERE contest = ?;",[req.body.id], (err, results, fields) => {
       if (err) {
           res.status(201).json(err.sqlMessage);
       } else {
@@ -216,7 +216,7 @@ router.post('/contest_details',authenticateToken,(req,res ) => {
 router.get('/get_questions/:id',(req,res ) => {
   let id = req.params.id;
   let output1;
-    connection.query("select * from CONTEST where id = ?;",[id], (err, results, fields) => {
+    connection.query("select * from contest where id = ?;",[id], (err, results, fields) => {
       if (err) {
           res.status(201).json(err.sqlMessage);
       } else {
@@ -225,7 +225,7 @@ router.get('/get_questions/:id',(req,res ) => {
     })
 
   
-    connection.query("select question from questions where CONTEST = ?;",[id], (err, results, fields) => {
+    connection.query("select question from questions where contest = ?;",[id], (err, results, fields) => {
       if (err) {
           res.status(201).json(err.sqlMessage);
       } else {
@@ -275,7 +275,7 @@ router.post('/contest_avg/:id',authenticateToken,(req,res) => {
 
 
 router.post('/subject_avg/:id',authenticateToken,(req,res) => {
-  connection.query("select t1.contest_id,avg(t1.total)/t1.max_mark * 100 as percentage from result t1 where published = 1 and contest_id in (select id from CONTEST t2 where code=?) group by contest_id,max_mark;",[req.params.id], (err, results, fields) => {
+  connection.query("select t1.contest_id,avg(t1.total)/t1.max_mark * 100 as percentage from result t1 where published = 1 and contest_id in (select id from contest t2 where code=?) group by contest_id,max_mark;",[req.params.id], (err, results, fields) => {
     if (err) {
       console.log(err)
         res.status(201).json(err.sqlMessage);

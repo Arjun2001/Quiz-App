@@ -46,6 +46,10 @@ export default function SubCard(props) {
     history.push(`/contest/${props.code}`)
   }
 
+  const dataUsage = () => {
+    history.push(`/subjperformance/${props.code}`)
+  }
+
   return (
     <Card className={classes.root}>
       <CardHeader
@@ -76,7 +80,7 @@ export default function SubCard(props) {
       </div>
       <CardActions disableSpacing>
         <IconButton aria-label="add to favorites">
-          <DataUsageIcon />
+          <DataUsageIcon onClick = {dataUsage}/>
         </IconButton>
       </CardActions >
     </Card>

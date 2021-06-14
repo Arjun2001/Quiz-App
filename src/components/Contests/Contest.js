@@ -38,7 +38,7 @@ const Table = () => {
 
     const convertTime = (START) => {
         let time = new  Date(START);
-        time = time.toLocaleString("en-SG");
+        time = (new Date(time).toLocaleString(undefined, {timeZone: 'Asia/Kolkata'}))
         return time;
     }
 
@@ -130,10 +130,7 @@ const Table = () => {
         return contest && contest.map(({CODE,END,START,NAME,ID},index) => {
             let now = new Date();
             now = now.toISOString();
-            let myDate = new Date(now)
-            myDate.setDate(myDate.getDate() + parseInt(1));
-            myDate.toISOString();
-            let sdf = new  Date(myDate).toISOString();
+            
             if ((now <= START) && (now > END)) {
                 return (
                     <tr key={ID}>

@@ -275,13 +275,27 @@ router.post('/contest_avg/:id',authenticateToken,(req,res) => {
 
 
 router.post('/subject_avg/:id',authenticateToken,(req,res) => {
+  let res1,names;
+  let id = []
   connection.query("select t1.contest_id,avg(t1.total)/t1.max_mark * 100 as percentage from result t1 where published = 1 and contest_id in (select id from contest t2 where code=?) group by contest_id,max_mark;",[req.params.id], (err, results, fields) => {
     if (err) {
       console.log(err)
         res.status(201).json(err.sqlMessage);
     } else {
-        console.log(results)
-        res.status(200).json(results);
+        results.map(data => {
+          id.push(data.contest_id)
+        })
+        console.log(id)
+        res1 = (results);
+        connection.query("select name from contest where id in (?)",[id], (err, results, fields) => {
+          if (err) {
+              console.log(err)
+              res.status(201).json(err.sqlMessage);
+          } else {
+            console.log(results)
+            res.status(200).json({res1:res1,names:results});
+          }
+        })
     }
   })
 });

@@ -79,22 +79,25 @@ const QuizQuestions = () => {
       window.history.back();
     }
 
-    const convertTime = (time1) => {
-      var date = new Date(time1).toLocaleString();
-      date = date.split(',')
-      var time = date[1];
-      var mdy = date[0];
+    const convertTime = (da) => {
+      let date = new Date(da);
+        let year = date.getFullYear();
+        let month = date.getMonth()+1;
+        let dt = date.getDate()-1;
 
-      // We then parse  the mdy into parts
-      mdy = mdy.split('/');
-      var day = parseInt(mdy[0]);
-      if (day <= 9) {day = "0"+day}
-      var month = parseInt(mdy[1]);
-      if (month <= 9) {month = "0"+month}
-      var year = parseInt(mdy[2]);
+        if (dt < 10) {
+        dt = '0' + dt;
+        }
+        if (month < 10) {
+        month = '0' + month;
+        }
+
+        date = (year+'-' + month + '-'+dt);
+      const time2 = new Date(da).toLocaleTimeString('en',
+                 { timeStyle: 'short', hour12: false, timeZone: 'UTC' });
 
       // Putting it all together
-      var formattedDate = year + '-' + month + '-' + day + 'T' + time.substring(1);
+      var formattedDate = date + 'T' + time2;
       return formattedDate
     }
 

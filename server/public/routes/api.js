@@ -204,7 +204,8 @@ router.post('/contest_details',authenticateToken,(req,res ) => {
         output1 = results;
       }
     })
-    connection.query("SELECT count(roll_no) FROM result WHERE contest_id = ?;",[req.body.id], (err, results, fields) => {
+    console.log(req.body.roll_no,req.body.id)
+    connection.query("SELECT count(roll_no) as count FROM result WHERE contest_id = ? and roll_no = ?;",[req.body.id,req.body.roll_no], (err, results, fields) => {
       if (err) {
           res.status(201).json(err.sqlMessage);
       } else {

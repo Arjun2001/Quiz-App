@@ -29,18 +29,20 @@ const Table = () => {
                     code:window.location.pathname.substring(9)
                 }
             }).then(res => {
+                
                 setContest(res.data)
             })
         }catch (err) {
             console.log(err);
         }
     }
+    
 
     const convertTime = (START) => {
-        let time = new  Date(START);
-        time = time.toISOString();
-        time = (new Date(time).toLocaleString(undefined, {timeZone: 'Asia/Kolkata'}))
-        return time;
+        console.log()
+        const time1 = new Date(START).toLocaleTimeString('en',
+                 { timeStyle: 'short', hour12: false, timeZone: 'UTC' });
+        return START.substring(0,10) + ", " + time1;
     }
 
     const EditQuiz = (id) => {
@@ -70,14 +72,21 @@ const Table = () => {
                     "Content-Type": "application/json"
                   },
                   data: {
-                    id:e
+                    id:e,roll_no:localStorage.getItem('Roll_no')
                 }
               }).then(res => {
-                let time = new Date();
-                time = time.toISOString();
+                let time = convertTime1(new Date());
                 let st_time = res.data.data[0].START
                 let end_time = res.data.data[0].END
-                if ( st_time <= time && end_time >= time ) {
+                console.log(res.data)
+                if (res.data.attended[0]['count'] >= 1) {
+                    Swal.fire({
+                        icon: 'error',
+                        text: "You have already attempted the Quiz!"
+                        })
+                }
+                
+                else if ( st_time <= time && end_time > time ) {
                     Swal.fire({
                         title: 'Enter the passcode',
                         html: `<input type="password" id="pin" class="swal2-input">`,
@@ -126,14 +135,29 @@ const Table = () => {
             return <th key={index}>{key.toUpperCase()}</th>
         })
     }
+    const convertTime1 = (time1) => {
+        var date = new Date(time1).toLocaleString();
+        date = date.split(',')
+        var time = date[1];
+        var mdy = date[0];
+  
+        // We then parse  the mdy into parts
+        mdy = mdy.split('/');
+        var day = parseInt(mdy[0]);
+        if (day <= 9) {day = "0"+day}
+        var month = parseInt(mdy[1]);
+        if (month <= 9) {month = "0"+month}
+        var year = parseInt(mdy[2]);
+  
+        // Putting it all together
+        var formattedDate = year + '-' + month + '-' + day + 'T' + time.substring(1);
+        return formattedDate
+      }
 
     const renderPresent = () => {
         return contest && contest.map(({CODE,END,START,NAME,ID},index) => {
-            let now = new Date();
-            now = now.toISOString();
-            now = (new Date(now).toLocaleString(undefined, {timeZone: 'Asia/Kolkata'}))
             
-            if ((now <= START) && (now > END)) {
+            if ((convertTime1(new Date()) >= START) && (convertTime1(new Date()) < END)) {
                 return (
                     <tr key={ID}>
                         <td>{ID}</td>
@@ -152,9 +176,9 @@ const Table = () => {
 
     const renderPast = () => {
         return contest && contest.map(({CODE,END,START,NAME,ID},index) => {
-            let now = new Date();
-            now = now.toISOString();
-            now = (new Date(now).toLocaleString(undefined, {timeZone: 'Asia/Kolkata'}))
+            let now = convertTime1(new Date())
+            // now = (new Date(now).toLocaleString(undefined, {timeZone: 'Asia/Kolkata'}))
+            
             if (now > START) {
                 return (
                     <tr key={ID}>
@@ -175,9 +199,9 @@ const Table = () => {
 
     const renderFuture = () => {
         return contest && contest.map(({CODE,END,START,NAME,ID},index) => {
-            let now = new Date();
-            now = now.toISOString();
-            now = (new Date(now).toLocaleString(undefined, {timeZone: 'Asia/Kolkata'}))
+            let now = convertTime1(new Date())
+            // now = (new Date(now).toLocaleString(undefined, {timeZone: 'Asia/Kolkata'}))
+            console.log(now < START,now,START)
             if (now < START) {
                 return (
                     <tr key={ID}>

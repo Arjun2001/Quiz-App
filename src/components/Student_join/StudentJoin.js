@@ -76,7 +76,7 @@ function StudentJoin() {
     }
   };
 
-  const handleNext = (text) => {
+  const handleNext = async(text) => {
     setMaxMark(maxMark + parseInt(data[questionIndex].mark))
     let point = 0;
     if (text === "Descriptive") {
@@ -118,10 +118,11 @@ function StudentJoin() {
     setUserSlectedAns([]);
 
     if (questionIndex === data.length - 1) {
+      setLoading(true)
       try {
         const { hours, minutes, seconds } = timeConverter(timeTaken);
         console.log("time taken = ",timeTaken,`${Number(hours)}h ${Number(minutes)}m ${Number(seconds)}s`,total,point )
-            axios ({
+            await axios ({
                 method:'post',
                 url: `http://35.225.238.45:5000/api/add_result`,
                 headers: {
@@ -139,18 +140,16 @@ function StudentJoin() {
                 }
             })
             .then(data => {
-              setLoading(true)
               console.log(data)
+              window.history.back();
                 Swal.fire({
                   position: 'center',
-                  allowOutsideClick: false,
                   icon: 'success',
                   title: 'Your work has been saved',
-                  showConfirmButton: false
+                  showConfirmButton: true
                 })
               setTimeout(() => {
                 window.history.back();
-                setLoading(false)
               },100);
             })
         }catch (err) {

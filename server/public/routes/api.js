@@ -286,7 +286,6 @@ router.post('/subject_avg/:id',authenticateToken,(req,res) => {
         results.map(data => {
           id.push(data.contest_id)
         })
-        console.log(id)
         res1 = (results);
         connection.query("select name from contest where id in (?)",[id], (err, results, fields) => {
           if (err) {

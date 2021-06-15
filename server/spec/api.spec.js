@@ -1,34 +1,289 @@
 var Request = require('request');
 var test_config = require('./test_config');
-let Token = null;
-// describe('login as faculty, read details, get all contents, login as student, show profile , get all contest,details, ', () => {
-//     var dataA = {}
-//     var dataF = {}
-//     beforeAll((done) => {
-//         console.log("login as student");
-//         let { username, password } = test_config.admins[0];
-//         let options = {
-//             url: `${test_config.baseURL}/signin`,
-//             form: { username, password }
-//         };
-//         Request.post(options, (err, res) => {
-//             dataA.status = res.statusCode;
-//             dataA.body = res.body;
-//             admin_token = JSON.parse(res.body).token;
-//             console.log("profile_test.js 24 admin token",admin_token)
-//             done();
-//         });
+let TokenS = null;
+let TokenF = null;
 
-//     })
-// })
-describe("Test name", function() {
-    console.log("inside")
-    var msg;
-    it("Test description", function() {
-      msg = 'Hello';
-      expect(msg).toBe('Hello');
+
+
+describe('Backend hosted', () => {
+  let dataA = {}
+  beforeAll((done) => {
+    let options = {
+        url: `${test_config.baseURL}`,
+    };
+    Request.get(options, (err, res) => {
+      console.log(err)
+        dataA.status = res.statusCode;
+        dataA.body = res.body;
+        done();
     });
-  });
+  })
+  it('Initial get request', (done) => {
+    expect(dataA.status).toBe(200)
+    done();
+  })
+})
+
+describe('login as student, read details, get all contents, login as student, show profile , get all contest,details, ', () => {
+    var dataA = {}
+    var dataF = {}
+    beforeAll((done) => {
+        
+        let { roll_no, password } = test_config.signinS;
+        let data = {roll_no , password}
+        let options = {
+            url: `${test_config.baseURL}/user/signin`,
+            form: {data}
+        };
+        Request.post(options, (err, res) => {
+          console.log(err)
+            dataA.status = res.statusCode;
+            dataA.body = res.body;
+            TokenS = JSON.parse(res.body).token;
+            done();
+        });
+    })
+    it('Login as student', (done) => {
+      expect(dataA.status).toBe(200)
+      expect(dataA.body).toContain('token');
+      expect(dataA.body).toContain('message');
+      done();
+  })
+  describe('After sigin', () => {
+    let dataA = {}
+    beforeAll((done) => {
+      let options = {
+          url: `${test_config.baseURL}/api/who`,
+          headers: {
+            'Accept': 'application/json, text/plain',
+            'Authorization': `Bearer ${TokenS}`
+        }
+      };
+      Request.get(options, (err, res) => {
+          dataA.status = res.statusCode;
+          dataA.body = JSON.parse(res.body);
+          done();
+          
+      });
+    })
+    it('who am i', (done) => {
+      expect(dataA.status).toBe(200);
+      expect(dataA.body.roll_no).toEqual(test_config.signinS.roll_no);
+      expect(dataA.body.role).toEqual("Student");
+      done();
+    })
+    describe('Getting the Details', () => {
+      let dataA = {}
+      beforeAll((done) => {
+        let options = {
+            url: `${test_config.baseURL}/api/courses`,
+            headers: {
+              'Accept': 'application/json, text/plain',
+              'Authorization': `Bearer ${TokenS}`
+          }
+        };
+        Request.post(options, (err, res) => {
+            dataA.status = res.statusCode;
+            dataA.body = JSON.parse(res.body);
+            done();
+            
+        });
+      })
+      it('Fetching all the course information', (done) => {
+        expect(dataA.status).toBe(200);
+        // expect(dataA.body).should.be.an("array");
+        done();
+      })
+    })
+    describe('Fetching the details of the contest', () => {
+      let dataA = {}
+      beforeAll((done) => {
+        let options = {
+            url: `${test_config.baseURL}/api/contests`,
+            headers: {
+              'Accept': 'application/json, text/plain',
+              'Authorization': `Bearer ${TokenS}`
+          },
+          form:{code:"None"}
+        };
+        Request.post(options, (err, res) => {
+          console.log(err)
+            dataA.status = res.statusCode;
+            dataA.body = JSON.parse(res.body);
+            done();
+        });
+      })
+      it('Fetching all the course information', (done) => {
+        expect(dataA.status).toBe(200);
+        // expect(dataA.body).should.be.an("array");
+        done();
+      })
+    })
+  })
+})
+
+
+// ------------------faculty---------------
+
+describe('login as faculty, read details, get all contents, login as student, show profile , get all contest,details, ', () => {
+  var dataA = {}
+  var dataF = {}
+  beforeAll((done) => {
+      
+      let { roll_no, password } = test_config.signinF;
+      let data = {roll_no , password}
+      let options = {
+          url: `${test_config.baseURL}/user/signin`,
+          form: {data}
+      };
+      Request.post(options, (err, res) => {
+          dataA.status = res.statusCode;
+          dataA.body = res.body;
+          TokenF = JSON.parse(res.body).token;
+          done();
+      });
+  })
+  it('Login as faculty', (done) => {
+    expect(dataA.status).toBe(200)
+    expect(dataA.body).toContain('token');
+    expect(dataA.body).toContain('message');
+    done();
+})
+describe('After sigin', () => {
+  let dataA = {}
+  beforeAll((done) => {
+    let options = {
+        url: `${test_config.baseURL}/api/who`,
+        headers: {
+          'Accept': 'application/json, text/plain',
+          'Authorization': `Bearer ${TokenF}`
+      }
+    };
+    Request.get(options, (err, res) => {
+        dataA.status = res.statusCode;
+        dataA.body = JSON.parse(res.body);
+        done();
+    });
+  })
+  it('who am i', (done) => {
+    expect(dataA.status).toBe(200);
+    expect(dataA.body.roll_no).toEqual(test_config.signinF.roll_no);
+    expect(dataA.body.role).toEqual("Admin");
+    done();
+  })
+  describe('Getting the Details', () => {
+    let dataA = {}
+    beforeAll((done) => {
+      let options = {
+          url: `${test_config.baseURL}/api/courses`,
+          headers: {
+            'Accept': 'application/json, text/plain',
+            'Authorization': `Bearer ${TokenF}`
+        }
+      };
+      Request.post(options, (err, res) => {
+          dataA.status = res.statusCode;
+          dataA.body = JSON.parse(res.body);
+          done();
+      });
+    })
+    it('Fetching all the course information', (done) => {
+      expect(dataA.status).toBe(200);
+      // expect(dataA.body).should.be.an("array");
+      done();
+    })
+  })
+  describe('Fetching the details of the contest', () => {
+    let dataA = {}
+    beforeAll((done) => {
+      let options = {
+          url: `${test_config.baseURL}/api/contests`,
+          headers: {
+            'Accept': 'application/json, text/plain',
+            'Authorization': `Bearer ${TokenS}`
+        },
+        form:{code:"None"}
+      };
+      Request.post(options, (err, res) => {
+          dataA.status = res.statusCode;
+          dataA.body = JSON.parse(res.body);
+          done();
+      });
+    })
+    it('Fetching all the course information', (done) => {
+      expect(dataA.status).toBe(200);
+      // expect(dataA.body).should.be.an("array");
+      done();
+    })
+  })
+  describe('Fetching the performance subject wise', () => {
+    let dataA = {}
+    beforeAll((done) => {
+      let options = {
+          url: `${test_config.baseURL}/api/contest_avg/${test_config.subject_code}`,
+          headers: {
+            'Accept': 'application/json, text/plain',
+            'Authorization': `Bearer ${TokenF}`
+        }
+      };
+      Request.post(options, (err, res) => {
+        console.log(err)
+          dataA.status = res.statusCode;
+          dataA.body = JSON.parse(res.body);
+          done();
+          console.log("done")
+      });
+    })
+    it('subject average performance', (done) => {
+      expect(dataA.status).toBe(200);
+      // expect(dataA.body).should.be.an("array");
+      done();
+    })
+  })
+  describe('Fetching the performance subject wise', () => {
+    let dataA = {}
+    beforeAll((done) => {
+      let options = {
+          url: `${test_config.baseURL}/api/subject_avg/${test_config.subject_code}`,
+          headers: {
+            'Accept': 'application/json, text/plain',
+            'Authorization': `Bearer ${TokenF}`
+        }
+      };
+      Request.post(options, (err, res) => {
+        console.log(err)
+          dataA.status = res.statusCode;
+          dataA.body = JSON.parse(res.body);
+          done();
+          console.log("done")
+      });
+    })
+    it('subject average performance', (done) => {
+      expect(dataA.status).toBe(200);
+      // expect(dataA.body).should.be.an("array");
+      done();
+    })
+  })
+  
+  
+})
+})
+
+// describe("Test name", function() {
+//     console.log("inside")
+//     var msg;
+//     it("Test description", function() {
+//       msg = 'Hello';
+//       expect(msg).toBe('Hello');
+//     });
+//   });
+
+
+
+
+  
+
+
 // describe("Server", () => {
 //     var server;
 //     beforeAll(() => {

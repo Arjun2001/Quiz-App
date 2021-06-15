@@ -1,3 +1,6 @@
 {
-    "baseURL": "http://35.225.238.45:5000/"
+    "baseURL": "http://localhost:5000",
+    "signinS" : {"roll_no":"18208","password":"18208"},
+    "signinF" : {"roll_no":"F18208","password":"F18208"},
+    "subject_code": "15SSK321"
 }
